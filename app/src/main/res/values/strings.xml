@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Order Food</string>
+
+    <string name="texto_cambiar_contrasena">Cambia tu contraseña</string>
+    <string name="etiqueta_contrasena">Senha</string>
+    <string name="etiqueta_resumo">Resumo</string>
+    <string name="etiqueta_info">Informações Rápidas</string>
+    <string name="action_settings">Configurações</string>
+    <string name="action_carrito">Adicionar Pedido</string>
+    <string name="action_salvar">Salvar</string>
+    <string name="pedido">Pedido</string>
+    <string name="inserir_item">Inserir Item</string>
+    <string name="inserir">Inserir</string>
+    <string name="valortotal">Valor Total</string>
+    <string name="quantidade">Quantidade</string>
+
+    <string name="titulo_tab_platos">PRATOS</string>
+    <string name="titulo_tab_bebidas">BEBIDAS</string>
+    <string name="titulo_tab_sobremesas">SOBREMESAS</string>
+    <string name="titulo_tab_saladas">SALADAS</string>
+
+    <string name="informacao_sem_pedidos">Não há pedidos realizados</string>
+
+</resources>
