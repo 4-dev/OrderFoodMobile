@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.orderFood.R;
-import br.com.orderFood.adapter.AdaptadorCategorias;
+import br.com.orderFood.adapter.AdaptadorProdutos;
 import br.com.orderFood.enumerador.TipoCategoria;
 import br.com.orderFood.helper.DialogContagemHelper;
 import br.com.orderFood.interfaces.RecyclerViewOnClickListenerHack;
@@ -49,7 +49,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
     private static final String INDICE_SECCION = "com.restaurantericoparico.FragmentoCategoriasTab.extra.INDICE_SECCION";
     private RecyclerView reciclador;
     private GridLayoutManager layoutManager;
-    private AdaptadorCategorias adaptador;
+    private AdaptadorProdutos adaptador;
     private Produto produtoSelecionado;
     private DialogContagemHelper dialogContagemHelper;
     private List<Item> listItens;
@@ -160,13 +160,13 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         switch (indiceSeccion) {
             case 0:
-                adaptador = new AdaptadorCategorias(listProdutosPRATOS(listProdutos));
+                adaptador = new AdaptadorProdutos(listProdutosPRATOS(listProdutos));
                 break;
             case 1:
-                adaptador = new AdaptadorCategorias(listProdutosBEBIDAS(listProdutos));
+                adaptador = new AdaptadorProdutos(listProdutosBEBIDAS(listProdutos));
                 break;
             case 2:
-                adaptador = new AdaptadorCategorias(listProdutosSOBREMESAS(listProdutos));
+                adaptador = new AdaptadorProdutos(listProdutosSOBREMESAS(listProdutos));
                 break;
         }
 
@@ -300,6 +300,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         if(listItens == null || listItens.size() == 0){
             showAlert("Não há itens inseridos para realizar o pedido!");
+            return false;
         }
 
         double valorPedido = 0.0;
@@ -310,6 +311,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         }
         if(valorPedido <= 0) {
             showAlert("Valor do Pedido se encontra zerado, impossibilitando o fechamento do mesmo!");
+            return false;
         }
 
         return true;
@@ -358,7 +360,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
     @Override
     public void onClickListener(View view, int position) {
 
-        AdaptadorCategorias adapter = (AdaptadorCategorias) reciclador.getAdapter();
+        AdaptadorProdutos adapter = (AdaptadorProdutos) reciclador.getAdapter();
         produtoSelecionado = (Produto) adapter.getItemAtPosition(position);
 
         showDialogContagemView();
@@ -388,14 +390,17 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
             if(validarPedido()){
 
                 Pedido pedido = new Pedido();
-                pedido.setStatus("A");
+                pedido.setStatus("PENDENTE");
                 pedido.setDtEmissao(Utils.retornaDateFormatadaDDMMYY_HHmmss(new Date()));
                 pedido.setItens(getItensPedido(listItens));
+                pedido.setQtItens(listItens.size());
                 pedido.setObservacao("");
 
                 PedidoBO pedidoBO = new PedidoBO(getActivity());
                 pedidoBO.salvarPedido(pedido);
                 pedidoBO = null;
+
+                EventBus.getDefault().postSticky(pedido);
 
                 showAlert("Mensagem de sucesso");
                 getActivity().finish();

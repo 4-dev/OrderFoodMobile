@@ -45,7 +45,7 @@
                     android:src="@drawable/ic_business_cinza_24dp" />
 
                 <TextView
-                    android:id="@+id/texto_nombre"
+                    android:id="@+id/texto_empresa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -63,7 +63,7 @@
                     android:src="@drawable/ic_phone_android_cinza_24dp" />
 
                 <TextView
-                    android:id="@+id/texto_email"
+                    android:id="@+id/texto_mesa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -80,7 +80,7 @@
                     android:src="@drawable/ic_status_cinza_24dp" />
 
                 <TextView
-                    android:id="@+id/texto_email3"
+                    android:id="@+id/texto_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -112,7 +112,7 @@
                 android:padding="@dimen/espacio_norma_1">
 
                 <ImageView
-                    android:id="@+id/icono_password"
+                    android:id="@+id/icono_mesa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -122,12 +122,12 @@
                     android:src="@drawable/ic_monetization_on_cinza_24dp" />
 
                 <TextView
-                    android:id="@+id/texto_password"
+                    android:id="@+id/texto_valortotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@+id/icono_password"
+                    android:layout_toRightOf="@+id/icono_mesa"
                     android:text="Valor Total: R$ 234,56"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 

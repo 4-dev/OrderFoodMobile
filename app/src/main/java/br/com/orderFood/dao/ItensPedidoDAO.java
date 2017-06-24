@@ -10,8 +10,8 @@ import br.com.orderFood.model.entity.ItensPedido;
  */
 public class ItensPedidoDAO extends GenericDAO<ItensPedido> {
 
-    private static final String TAG = "PRODUTO_DAO";
-    private static final String NOME_TABELA = "PRODUTO";
+    private static final String TAG = "ITEM_DAO";
+    private static final String NOME_TABELA = "ITEMPEDIDO";
     public static final String SCRIPT_CRIACAO_TABELA = "CREATE TABLE  IF NOT EXISTS " + NOME_TABELA + " ([CODIGO] INTEGER PRIMARY KEY AUTOINCREMENT, [CODPRODUTO] INTEGER," +
                                                         "[CODPEDIDO] INTEGER, [QUANTIDADE] REAL, [VALORTOTAL] REAL, [VALORUNITARIO] REAL)";
     public static final String SCRIPT_DELECAO_TABELA = "DROP TABLE IF EXISTS " + NOME_TABELA;

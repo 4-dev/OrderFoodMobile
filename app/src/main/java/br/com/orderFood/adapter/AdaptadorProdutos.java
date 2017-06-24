@@ -14,8 +14,8 @@ import java.util.List;
 import br.com.orderFood.R;
 import br.com.orderFood.model.entity.Produto;
 
-public class AdaptadorCategorias
-        extends RecyclerView.Adapter<AdaptadorCategorias.ViewHolder> {
+public class AdaptadorProdutos
+        extends RecyclerView.Adapter<AdaptadorProdutos.ViewHolder> {
 
 
     private final List<Produto> items;
@@ -39,7 +39,7 @@ public class AdaptadorCategorias
 
     }
 
-    public AdaptadorCategorias(List<Produto> items) {
+    public AdaptadorProdutos(List<Produto> items) {
         this.items = items;
     }
 

@@ -11,11 +11,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.orderFood.R;
+import br.com.orderFood.adapter.PedidosAdapter;
 import br.com.orderFood.interfaces.RecyclerViewOnClickListenerHack;
+import br.com.orderFood.model.bo.PedidoBO;
 import br.com.orderFood.model.entity.Pedido;
 
 /**
@@ -28,7 +35,8 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
     private RecyclerView mRecyclerView;
     private View mEmptyStateContainer;
     private List<Pedido> mList;
-    private Pedido mPedidoSelecionada;
+    private PedidoBO pedidoBO;
+    private PedidosAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +49,6 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         View view = inflater.inflate(R.layout.fragment_pedidos, container, false);
 
         mEmptyStateContainer = (View) view.findViewById(R.id.empty_state_container);
-        setmRecyclerView(view);
 
         return view;
 
@@ -69,20 +76,66 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         this.color = color;
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
+        setmRecyclerView(getView());
         setListDados();
 
     }
 
+    public List<Pedido> getListPedidos() throws SQLException {
+
+        List<Pedido> listPedidos = new ArrayList<>();
+        if(pedidoBO == null) pedidoBO = new PedidoBO(getActivity());
+        listPedidos = pedidoBO.getPedidos();
+
+        return listPedidos;
+
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
+    public void onEvent(Pedido pedido) {
+        //setListDados();
+    }
+
+    private void showNotPedidos() {
+        mRecyclerView.setVisibility(View.GONE);
+        mEmptyStateContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void showYesPedidos() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mEmptyStateContainer.setVisibility(View.GONE);
+    }
+
     private void setListDados() {
 
-        //try {
+        try {
 
             if (mList == null) mList = new ArrayList<Pedido>();
             else mList.clear();
+
+            mList.addAll(getListPedidos());
+
+            if(mAdapter == null)mAdapter = new PedidosAdapter(getActivity(), mList);
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
 
             if (mList != null && mList.size() > 0) {
                 showYesPedidos();
@@ -90,22 +143,12 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
                 showNotPedidos();
             }
 
-        /*}catch (SQLException e){
+        }catch (SQLException e){
             showAlert("Ops! Ocorreu um erro ao buscar entregas...");
             e.printStackTrace();
-        }*/
+        }
 
     }
-
-    /*public List<EntregaModel> getListEntregas() throws SQLException{
-
-        List<EntregaModel> listEntregas = new ArrayList<>();
-        if(mNfSaidaBo == null) mNfSaidaBo = new NfSaidaBO(getActivity());
-        listEntregas = mNfSaidaBo.buscarEntregas();
-
-        return listEntregas;
-
-    }*/
 
     @Override
     public void onLongPressClickListener(View view, int position) {
@@ -167,16 +210,6 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
-    }
-
-    private void showNotPedidos() {
-        mRecyclerView.setVisibility(View.GONE);
-        mEmptyStateContainer.setVisibility(View.VISIBLE);
-    }
-
-    private void showYesPedidos() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mEmptyStateContainer.setVisibility(View.GONE);
     }
 
 }

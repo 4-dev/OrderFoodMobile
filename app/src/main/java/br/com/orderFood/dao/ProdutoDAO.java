@@ -20,7 +20,7 @@ public class ProdutoDAO extends GenericDAO<Produto> {
 
     private static final String TAG = "PRODUTO_DAO";
     private static final String NOME_TABELA = "PRODUTO";
-    public static final String SCRIPT_CRIACAO_TABELA = "CREATE TABLE  IF NOT EXISTS " + NOME_TABELA + " ([CODIGO] INTEGER PRIMARY KEY, [CATEGORIA] TEXT," +
+    public static final String SCRIPT_CRIACAO_TABELA = "CREATE TABLE IF NOT EXISTS " + NOME_TABELA + " ([CODIGO] INTEGER PRIMARY KEY, [CATEGORIA] TEXT," +
                                                         "[DESCRICAO] TEXT, [FOTO] TEXT, [VALOR] REAL, [QTESTOQUE] REAL)";
     public static final String SCRIPT_DELECAO_TABELA = "DROP TABLE IF EXISTS " + NOME_TABELA;
     public static final String SCRIPT_LIMPAR_TABELA = "DELETE FROM " + NOME_TABELA;

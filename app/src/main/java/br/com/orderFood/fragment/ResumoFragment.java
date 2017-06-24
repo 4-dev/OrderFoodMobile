@@ -7,8 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.sql.SQLException;
+
 import br.com.orderFood.R;
 import br.com.orderFood.helper.ResumoHelper;
+import br.com.orderFood.model.bo.PedidoBO;
+import br.com.orderFood.model.entity.Parametro;
 
 
 /**
@@ -19,7 +23,7 @@ public class ResumoFragment extends BaseFragment {
     protected static final String TAG = "LOG";
     private int color;
     private View mView;
-    private ResumoHelper mResumoEntregaHelper;
+    private ResumoHelper mResumoHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,7 @@ public class ResumoFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        //init();
+        init();
 
     }
 
@@ -46,22 +50,26 @@ public class ResumoFragment extends BaseFragment {
 
     }
 
-    /*private void init(){
+    private void init() {
 
         try {
 
-            if(mResumoEntregaHelper == null) mResumoEntregaHelper = new ResumoHelper(getActivity(), mView);
+            if (mResumoHelper == null) mResumoHelper = new ResumoHelper(getActivity(), mView);
 
-            CarregamentoBO carregamentoBO = new CarregamentoBO(getActivity());
-            CarregamentoModel cargaModel = carregamentoBO.getResumoCarregamento();
-            mResumoEntregaHelper.setInformacoes(cargaModel);
+            PedidoBO pedidoBO = new PedidoBO(getActivity());
+            Parametro parametro = new Parametro();
+            parametro.setStatus("Em Atendimento");
+            parametro.setCodMesa(2);
+            parametro.setEmpresa("Deyvid Solares e Lanches");
+
+            mResumoHelper.setInformacoes(parametro, pedidoBO.getPedidos());
 
         } catch (SQLException e) {
             showAlert("Ops! Ocorreu um erro ao buscar resumo do carregamento");
             e.printStackTrace();
         }
 
-    }*/
+    }
 
     public ResumoFragment() {
 
