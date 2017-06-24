@@ -14,7 +14,17 @@ public class ItensPedido implements Serializable, EntidadePersistivel {
     private int codigo;
     private int codProduto;
     private int codPedido;
-    private int quantidade;
+    private double quantidade;
+    private double valorTotal;
+    private double valorUnitario;
+
+    public double getValorUnitario() {
+        return valorUnitario;
+    }
+
+    public void setValorUnitario(double valorUnitario) {
+        this.valorUnitario = valorUnitario;
+    }
 
     public int getCodigo() {
         return codigo;
@@ -40,12 +50,20 @@ public class ItensPedido implements Serializable, EntidadePersistivel {
         this.codPedido = codPedido;
     }
 
-    public int getQuantidade() {
+    public double getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(double quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     @Override

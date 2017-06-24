@@ -2,7 +2,14 @@ package br.com.orderFood.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.orderFood.enumerador.TipoCategoria;
 import br.com.orderFood.model.entity.Categoria;
 import br.com.orderFood.model.entity.Produto;
 
@@ -50,8 +57,6 @@ public class ProdutoDAO extends GenericDAO<Produto> {
         contentValues.put(COLUNA_VALOR, produto.getValor());
         contentValues.put(COLUNA_QTDEESTOQUE, produto.getQtEstoque());
 
-
-
         return contentValues;
 
     }
@@ -61,5 +66,58 @@ public class ProdutoDAO extends GenericDAO<Produto> {
         return null;
     }
 
+    public boolean isProdutos() {
+
+        String sql = "SELECT * FROM " + NOME_TABELA + " LIMIT 1";
+        Cursor cursor = null;
+
+        try {
+
+            cursor = dataBase.rawQuery(sql, null);
+            if (cursor.getCount() > 0) return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            return false;
+        } finally {
+            cursor.close();
+        }
+
+        return false;
+
+    }
+
+    public List<Produto> getProdutos() throws SQLException {
+
+        StringBuffer sql = new StringBuffer();
+        Cursor cursor = null;
+        List<Produto> resultados = new ArrayList<>();
+
+        sql.append("SELECT CODIGO, DESCRICAO, VALOR, QTESTOQUE, CATEGORIA FROM PRODUTO");
+
+        cursor = dataBase.rawQuery(sql.toString(), null);
+
+        while (cursor.moveToNext()) {
+
+            Produto model = new Produto();
+            model.setCodigo(cursor.getInt(0));
+            model.setDescricao(cursor.getString(1));
+            model.setValor(cursor.getDouble(2));
+            model.setQtEstoque(cursor.getDouble(3));
+
+            if(cursor.getString(4).equalsIgnoreCase("PRATOS")) {
+                model.setCategoria(TipoCategoria.PRATOS);
+            } else if(cursor.getString(4).equalsIgnoreCase("BEBIDAS")) {
+                model.setCategoria(TipoCategoria.BEBIDAS);
+            } else {
+                model.setCategoria(TipoCategoria.SOBREMESAS);
+            }
+
+            resultados.add(model);
+            model = null;
+        }
+
+        return resultados;
+    }
 
 }

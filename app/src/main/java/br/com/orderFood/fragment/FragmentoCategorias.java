@@ -8,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.orderFood.R;
+import br.com.orderFood.helper.DialogContagemHelper;
 
 public class FragmentoCategorias extends Fragment {
 
@@ -27,7 +31,6 @@ public class FragmentoCategorias extends Fragment {
     private AppBarLayout appBarLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
 
     public FragmentoCategorias() {
 
@@ -46,6 +49,7 @@ public class FragmentoCategorias extends Fragment {
             poblarViewPager(viewPager);
 
             tabLayout.setupWithViewPager(viewPager);
+
         }
 
         return view;
@@ -70,6 +74,14 @@ public class FragmentoCategorias extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        appBarLayout.removeView(tabLayout);
+    }
+
+    /*
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -81,10 +93,21 @@ public class FragmentoCategorias extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        appBarLayout.removeView(tabLayout);
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+
+        } else if (id == R.id.action_salvar) {
+            //getActivity().finish();
+        }
+
+        return true;
+
     }
+
+    */
 
     public class AdaptadorSecciones extends FragmentStatePagerAdapter {
         private final List<Fragment> fragmentos = new ArrayList<>();

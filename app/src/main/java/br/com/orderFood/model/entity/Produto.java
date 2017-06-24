@@ -22,10 +22,23 @@ public class Produto implements Serializable, EntidadePersistivel {
     private double valor;
     private double qtEstoque;
 
-    public Produto(double valor, String descricao, int idDrawable) {
+    public Produto() {
+
+    }
+
+    public Produto(int codigo, double valor, String descricao, int idDrawable) {
+        this.codigo = codigo;
         this.valor = valor;
         this.descricao = descricao;
         this.foto = idDrawable;
+    }
+
+    public Produto(int codigo, TipoCategoria categoria, double valor, String descricao, double qtEstoque) {
+        this.codigo = codigo;
+        this.categoria = categoria;
+        this.valor = valor;
+        this.descricao = descricao;
+        this.qtEstoque = qtEstoque;
     }
 
     public static final List<Produto> COMIDAS_POPULARES = new ArrayList<Produto>();
@@ -35,29 +48,29 @@ public class Produto implements Serializable, EntidadePersistivel {
 
     static {
 
-        COMIDAS_POPULARES.add(new Produto(5, "Camarão Tismados", R.drawable.camarones));
-        COMIDAS_POPULARES.add(new Produto(3.2, "Rosca Herbárea", R.drawable.rosca));
-        COMIDAS_POPULARES.add(new Produto(12, "Sushi Extremo", R.drawable.sushi));
-        COMIDAS_POPULARES.add(new Produto(9, "Sandwich Deli", R.drawable.sandwich));
-        COMIDAS_POPULARES.add(new Produto(34, "Lomo De Cerdo Austral", R.drawable.lomo_cerdo));
+        COMIDAS_POPULARES.add(new Produto(1, 5, "Camarão Tismados", R.drawable.camarones));
+        COMIDAS_POPULARES.add(new Produto(2, 3.2, "Rosca Herbárea", R.drawable.rosca));
+        COMIDAS_POPULARES.add(new Produto(3, 12, "Sushi Extremo", R.drawable.sushi));
+        COMIDAS_POPULARES.add(new Produto(4, 9, "Sandwich Deli", R.drawable.sandwich));
+        COMIDAS_POPULARES.add(new Produto(5, 34, "Lomo De Cerdo Austral", R.drawable.lomo_cerdo));
 
-        PLATILLOS.add(new Produto(5, "Camarão Tismados", R.drawable.camarones));
-        PLATILLOS.add(new Produto(3.2, "Rosca Herbárea", R.drawable.rosca));
-        PLATILLOS.add(new Produto(12, "Sushi Extremo", R.drawable.sushi));
-        PLATILLOS.add(new Produto(9, "Sandwich Deli", R.drawable.sandwich));
-        PLATILLOS.add(new Produto(34f, "Lomo De Cerdo Austral", R.drawable.lomo_cerdo));
+        PLATILLOS.add(new Produto(6,  5, "Camarão Tismados", R.drawable.camarones));
+        PLATILLOS.add(new Produto(7, 3.2, "Rosca Herbárea", R.drawable.rosca));
+        PLATILLOS.add(new Produto(8, 12, "Sushi Extremo", R.drawable.sushi));
+        PLATILLOS.add(new Produto(10, 9, "Sandwich Deli", R.drawable.sandwich));
+        PLATILLOS.add(new Produto(11, 34f, "Lomo De Cerdo Austral", R.drawable.lomo_cerdo));
 
-        BEBIDAS.add(new Produto(3, "Taza de Café", R.drawable.cafe));
-        BEBIDAS.add(new Produto(12, "Coctel Tronchatoro", R.drawable.coctel));
-        BEBIDAS.add(new Produto(5, "Jugo Natural", R.drawable.jugo_natural));
-        BEBIDAS.add(new Produto(24, "Coctel Jordano", R.drawable.coctel_jordano));
-        BEBIDAS.add(new Produto(30, "Botella Vino Tinto Darius", R.drawable.vino_tinto));
+        BEBIDAS.add(new Produto(12, 3, "Taza de Café", R.drawable.cafe));
+        BEBIDAS.add(new Produto(13, 12, "Coctel Tronchatoro", R.drawable.coctel));
+        BEBIDAS.add(new Produto(14, 5, "Jugo Natural", R.drawable.jugo_natural));
+        BEBIDAS.add(new Produto(15, 24, "Coctel Jordano", R.drawable.coctel_jordano));
+        BEBIDAS.add(new Produto(16, 30, "Botella Vino Tinto Darius", R.drawable.vino_tinto));
 
-        POSTRES.add(new Produto(2, "Postre De Vainilla", R.drawable.postre_vainilla));
-        POSTRES.add(new Produto(3, "Flan Celestial", R.drawable.flan_celestial));
-        POSTRES.add(new Produto(2.5, "Cupcake Festival", R.drawable.cupcakes_festival));
-        POSTRES.add(new Produto(4, "Pastel De Fresa", R.drawable.pastel_fresa));
-        POSTRES.add(new Produto(5, "Muffin Amoroso", R.drawable.muffin_amoroso));
+        POSTRES.add(new Produto(17, 2, "Postre De Vainilla", R.drawable.postre_vainilla));
+        POSTRES.add(new Produto(18, 3, "Flan Celestial", R.drawable.flan_celestial));
+        POSTRES.add(new Produto(19, 2.5, "Cupcake Festival", R.drawable.cupcakes_festival));
+        POSTRES.add(new Produto(20, 4, "Pastel De Fresa", R.drawable.pastel_fresa));
+        POSTRES.add(new Produto(21, 5, "Muffin Amoroso", R.drawable.muffin_amoroso));
     }
 
     public int getCodigo() {

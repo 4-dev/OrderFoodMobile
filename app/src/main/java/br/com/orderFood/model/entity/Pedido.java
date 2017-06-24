@@ -17,7 +17,16 @@ public class Pedido implements Serializable, EntidadePersistivel {
     private Double valorTotal;
     private String observacao;
     private String status;
+    private boolean enviado;
     private List<ItensPedido> itens;
+
+    public boolean isEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(boolean enviado) {
+        this.enviado = enviado;
+    }
 
     public List<ItensPedido> getItens() {
         return itens;

@@ -11,6 +11,8 @@
     <string name="pedido">Pedido</string>
     <string name="inserir_item">Inserir Item</string>
     <string name="inserir">Inserir</string>
+    <string name="voltar">Voltar</string>
+    <string name="remover">Remover</string>
     <string name="valortotal">Valor Total</string>
     <string name="quantidade">Quantidade</string>
 

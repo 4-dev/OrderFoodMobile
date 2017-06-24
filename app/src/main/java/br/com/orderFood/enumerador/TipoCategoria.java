@@ -6,10 +6,9 @@ package br.com.orderFood.enumerador;
 
 public enum TipoCategoria {
 
-    UN("UN"),
-    LT("LT"),
-    PC("PC"),
-    KG("KG");
+    PRATOS("PRATOS"),
+    BEBIDAS("BEBIDAS"),
+    SOBREMESAS("SOBREMESAS");
 
     private String descricao;
 

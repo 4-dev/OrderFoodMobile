@@ -41,11 +41,12 @@ public class PedidoActivity extends BaseActivity {
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle("Pedido");
+            ab.setTitle("Pedido   (R$ 0,00)");
         }
 
     }
 
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -58,5 +59,6 @@ public class PedidoActivity extends BaseActivity {
         return true;
 
     }
+    */
 
 }
