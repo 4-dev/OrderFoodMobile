@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import br.com.orderFood.R;
 import br.com.orderFood.interfaces.APIServiceConection;
+import br.com.orderFood.model.bo.ParametroBO;
 import br.com.orderFood.utils.UtilTCM;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -86,7 +87,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
     private void verificarMesaQRCode() {
 
         showProgressDialog("Aguarde verificando conexão...");
-        String URL = "http://localhost:9090/mesa/";
+        String URL = "http://10.0.0.110:9090/mesa/";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
@@ -105,6 +106,11 @@ public class ScannerQrCodeActivity extends BaseActivity {
                     String retornoChamada = requester.execute().body();
 
                     if (retornoChamada != null) {
+
+                        /*ParametroBO parametroBO = new ParametroBO(this);
+                        parametroBO.limparTabelas();
+                        parametroBO = null;*/
+
                         mTextToast = "RETORNO: " + retornoChamada;
                         runOnUiThread(changeMessageToastALERT);
 

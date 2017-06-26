@@ -45,7 +45,7 @@
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_entrega"
+        android:id="@+id/fab_enviarpedidos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

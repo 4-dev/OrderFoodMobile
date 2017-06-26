@@ -3,7 +3,6 @@ package br.com.orderFood.dao;
 import android.content.ContentValues;
 import android.content.Context;
 
-import br.com.orderFood.model.entity.Categoria;
 import br.com.orderFood.model.entity.Parametro;
 
 /**
@@ -59,5 +58,11 @@ public class ParametroDAO extends GenericDAO<Parametro> {
         return null;
     }
 
+    public void limparTabelas() {
+        dataBase.execSQL(ParametroDAO.SCRIPT_LIMPAR_TABELA);
+        dataBase.execSQL(PedidoDAO.SCRIPT_LIMPAR_TABELA);
+        dataBase.execSQL(ProdutoDAO.SCRIPT_LIMPAR_TABELA);
+        dataBase.execSQL(ItensPedidoDAO.SCRIPT_LIMPAR_TABELA);
+    }
 
 }

@@ -3,6 +3,7 @@ package br.com.orderFood.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -30,13 +31,13 @@ import br.com.orderFood.model.entity.Pedido;
  */
 public class PedidosFragment extends BaseFragment implements RecyclerViewOnClickListenerHack {
 
-    protected static final String TAG = "LOG";
     private int color;
     private RecyclerView mRecyclerView;
     private View mEmptyStateContainer;
     private List<Pedido> mList;
     private PedidoBO pedidoBO;
     private PedidosAdapter mAdapter;
+    private FloatingActionButton mFab;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +48,59 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_pedidos, container, false);
-
         mEmptyStateContainer = (View) view.findViewById(R.id.empty_state_container);
+        buttonFabEnviarPedidos(view);
 
         return view;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setmRecyclerView(getView());
+        setListDados();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void buttonFabEnviarPedidos(View view) {
+
+        mFab = (FloatingActionButton) view.findViewById(R.id.fab_enviarpedidos);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+
+                    PedidoBO pedidoBO = new PedidoBO(getActivity());
+                    List<Pedido> listPedidos = pedidoBO.getPedidosPendentes();
+                    pedidoBO = null;
+
+                    if(listPedidos != null && listPedidos.size() > 0){
+                        showAlert(getString(R.string.msg_inf_construcao));
+                    } else {
+                        showAlert(getString(R.string.msg_inf_pedidospend));
+                    }
+
+                }catch (SQLException e){
+                    showAlert(getString(R.string.msg_erro_inesperado));
+                }
+
+            }
+        });
 
     }
 
@@ -76,28 +126,6 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         this.color = color;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        setmRecyclerView(getView());
-        setListDados();
-
-    }
-
     public List<Pedido> getListPedidos() throws SQLException {
 
         List<Pedido> listPedidos = new ArrayList<>();
@@ -107,7 +135,6 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         return listPedidos;
 
     }
-
 
     @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
     public void onEvent(Pedido pedido) {

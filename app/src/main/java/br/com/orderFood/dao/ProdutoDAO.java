@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.orderFood.enumerador.TipoCategoria;
-import br.com.orderFood.model.entity.Categoria;
 import br.com.orderFood.model.entity.Produto;
 
 /**
