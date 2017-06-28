@@ -74,7 +74,10 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
                 } else {
 
-                    verificarMesaQRCode();
+                    //verificarMesaQRCode();
+
+                    Intent form = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(form);
 
                 }
             } else {

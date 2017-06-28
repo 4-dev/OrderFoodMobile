@@ -160,13 +160,13 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         switch (indiceSeccion) {
             case 0:
-                adaptador = new AdaptadorProdutos(listProdutosPRATOS(listProdutos));
+                adaptador = new AdaptadorProdutos(listProdutosPRATOS(listProdutos),listItens);
                 break;
             case 1:
-                adaptador = new AdaptadorProdutos(listProdutosBEBIDAS(listProdutos));
+                adaptador = new AdaptadorProdutos(listProdutosBEBIDAS(listProdutos),listItens);
                 break;
             case 2:
-                adaptador = new AdaptadorProdutos(listProdutosSOBREMESAS(listProdutos));
+                adaptador = new AdaptadorProdutos(listProdutosSOBREMESAS(listProdutos),listItens);
                 break;
         }
 
@@ -175,7 +175,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         return view;
     }
 
-    public void showDialogContagemView() {
+    public void showDialogInsercaoView() {
 
         final Activity activity = getActivity();
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
@@ -363,7 +363,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         AdaptadorProdutos adapter = (AdaptadorProdutos) reciclador.getAdapter();
         produtoSelecionado = (Produto) adapter.getItemAtPosition(position);
 
-        showDialogContagemView();
+        showDialogInsercaoView();
 
     }
 

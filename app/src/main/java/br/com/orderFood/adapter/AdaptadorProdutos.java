@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -13,12 +14,14 @@ import java.util.List;
 
 import br.com.orderFood.R;
 import br.com.orderFood.model.entity.Produto;
+import br.com.orderFood.model.model.Item;
 
 public class AdaptadorProdutos
         extends RecyclerView.Adapter<AdaptadorProdutos.ViewHolder> {
 
 
     private final List<Produto> items;
+    private List<Item> listItens;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,6 +29,7 @@ public class AdaptadorProdutos
         public TextView nombre;
         public TextView precio;
         public ImageView imagen;
+        public LinearLayout linearlayout_color;
 
         public ViewHolder(View v) {
 
@@ -34,13 +38,15 @@ public class AdaptadorProdutos
             nombre = (TextView) v.findViewById(R.id.nombre_comida);
             precio = (TextView) v.findViewById(R.id.precio_comida);
             imagen = (ImageView) v.findViewById(R.id.miniatura_comida);
+            linearlayout_color = (LinearLayout) v.findViewById(R.id.linearlayout_color);
 
         }
 
     }
 
-    public AdaptadorProdutos(List<Produto> items) {
+    public AdaptadorProdutos(List<Produto> items, List<Item> listItens) {
         this.items = items;
+        this.listItens = listItens;
     }
 
     public Object getItemAtPosition(int position) {
@@ -69,6 +75,16 @@ public class AdaptadorProdutos
                 .into(viewHolder.imagen);
         viewHolder.nombre.setText(item.getDescricao());
         viewHolder.precio.setText("R$ " + item.getValor());
+
+        if(listItens != null && listItens .size() > 0) {
+            for (Item itemAd : listItens) {
+                if (itemAd.getCodProduto() == items.get(i).getCodigo())
+                    viewHolder.linearlayout_color.setBackgroundResource(R.color.pedidoAdicionado);
+                else viewHolder.linearlayout_color.setBackgroundResource(R.color.accentColor);
+            }
+        } else {
+            viewHolder.linearlayout_color.setBackgroundResource(R.color.accentColor);
+        }
 
     }
 
