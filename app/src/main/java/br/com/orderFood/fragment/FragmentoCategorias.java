@@ -66,9 +66,9 @@ public class FragmentoCategorias extends Fragment {
 
     private void poblarViewPager(ViewPager viewPager) {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
-        adapter.addFragment(FragmentoCategoria.nuevaInstancia(0), getString(R.string.titulo_tab_platos));
-        adapter.addFragment(FragmentoCategoria.nuevaInstancia(1), getString(R.string.titulo_tab_bebidas));
-        adapter.addFragment(FragmentoCategoria.nuevaInstancia(2), getString(R.string.titulo_tab_sobremesas));
+        adapter.addFragment(FragmentoCategoria.novaInstancia(0), getString(R.string.titulo_tab_platos));
+        adapter.addFragment(FragmentoCategoria.novaInstancia(1), getString(R.string.titulo_tab_bebidas));
+        adapter.addFragment(FragmentoCategoria.novaInstancia(2), getString(R.string.titulo_tab_sobremesas));
         //adapter.addFragment(FragmentoCategoria.nuevaInstancia(3), getString(R.string.titulo_tab_saladas));
         viewPager.setAdapter(adapter);
     }

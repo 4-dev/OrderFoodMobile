@@ -56,7 +56,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
     private List<Produto> listProdutos;
     private Parametro parametro;
 
-    public static FragmentoCategoria nuevaInstancia(int indiceSeccion) {
+    public static FragmentoCategoria novaInstancia(int indiceSeccion) {
         FragmentoCategoria fragment = new FragmentoCategoria();
         Bundle args = new Bundle();
         args.putInt(INDICE_SECCION, indiceSeccion);
@@ -149,12 +149,28 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         View view = inflater.inflate(R.layout.fragmento_grupo_items, container, false);
 
-        if(listProdutos == null) listProdutos = listProdutos();
-
         reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
         layoutManager = new GridLayoutManager(getActivity(), 2);
         reciclador.addOnItemTouchListener(new RecyclerViewTouchListener(getActivity(), reciclador, this));
         reciclador.setLayoutManager(layoutManager);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setarListagemDados();
+
+    }
+
+    private void setarListagemDados(){
+
+        if (listProdutos == null) listProdutos = new ArrayList<>();
+        else listProdutos.clear();
+
+        listProdutos = listProdutos();
 
         int indiceSeccion = getArguments().getInt(INDICE_SECCION);
 
@@ -171,8 +187,8 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         }
 
         reciclador.setAdapter(adaptador);
+        adaptador.notifyDataSetChanged();
 
-        return view;
     }
 
     public void showDialogInsercaoView() {
@@ -205,6 +221,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
                             }
                         }
 
+                        setarListagemDados();
                         calcularValorToolbar();
 
                     }
@@ -243,6 +260,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
                             listItens.add(item);
                         }
 
+                        setarListagemDados();
                         calcularValorToolbar();
 
                         dialogContagemHelper = null;
