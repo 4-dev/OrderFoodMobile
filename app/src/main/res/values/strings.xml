@@ -22,8 +22,14 @@
     <string name="titulo_tab_saladas">SALADAS</string>
 
     <string name="informacao_sem_pedidos">Não há pedidos realizados</string>
+    <string name="mensagem_progress">Aguarde, verificando conexão...</string>
     <string name="msg_erro_inesperado">OPS! Aconteceu um erro inesperado!</string>
     <string name="msg_inf_pedidospend">Não há pedidos a serem enviados!</string>
     <string name="msg_inf_construcao">Opção se encontra em construção!</string>
+    <string name="mensagem_naohainformacoes">Não há informações disponíveis...</string>
+    <string name="mensagem_erro_admin">Erro ao realizar operação, contate o Administrador</string>
+    <string name="mensagem_conexao_naoestabelecida">Conexão não estabelecida...</string>
+    <string name="mensagem_configuracao">Por favor configure o aplicativo para prosseguir</string>
+    <string name="mensagem_erro_padrao">Erro ao realizar operação!</string>
 
 </resources>

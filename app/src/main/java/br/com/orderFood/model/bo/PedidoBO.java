@@ -83,6 +83,13 @@ public class PedidoBO {
         mDao = new PedidoDAO(mContext);
         List<Pedido> listPedidos = new ArrayList<>();
         listPedidos = mDao.getPedidosPendentes();
+
+        if(listPedidos != null && listPedidos.size() > 0) {
+            for (Pedido p : listPedidos) {
+                p.setItens(mDao.getItensPedido(p));
+            }
+        }
+
         mDao = null;
 
         return listPedidos;

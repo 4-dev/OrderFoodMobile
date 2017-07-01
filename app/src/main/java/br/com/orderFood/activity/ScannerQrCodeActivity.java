@@ -89,7 +89,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
     private void verificarMesaQRCode() {
 
-        showProgressDialog("Aguarde verificando conexão...");
+        showProgressDialog(getString(R.string.mensagem_progress));
         String URL = "https://orderfood.cfapps.io/mesa/";
 
         Retrofit retrofit = new Retrofit.Builder()

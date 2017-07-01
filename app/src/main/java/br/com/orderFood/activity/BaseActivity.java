@@ -31,11 +31,11 @@ public class BaseActivity extends AppCompatActivity {
     MaterialDialog mProgressDialog;
     String mTextToast = "";
 
-    public void showAlert(String message){
-        Snackbar.make(findViewById(android.R.id.content),message,Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    public void showAlert(String message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
-    public void showAlertRede(){
+    public void showAlertRede() {
         Snackbar snackbar = Snackbar
                 .make(findViewById(android.R.id.content), "Sem conexão com Internet. Por favor, verifique sey WiFi ou 3G.", Snackbar.LENGTH_LONG)
                 .setAction("Habilitar", new View.OnClickListener() {
@@ -49,33 +49,33 @@ public class BaseActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    public void showFixedBottom(String message){
-        Snackbar.make(findViewById(android.R.id.content),message,Snackbar.LENGTH_INDEFINITE).setAction("Action", null).show();
+    public void showFixedBottom(String message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE).setAction("Action", null).show();
     }
 
-    public void hideKeyboard(){
+    public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public void setStringFromEdit(int id, String text){
+    public void setStringFromEdit(int id, String text) {
         EditText input = (EditText) findViewById(id);
         input.setText(text);
     }
 
-    public void showProgressDialog(String message){
+    public void showProgressDialog(String message) {
         mProgressDialog = new MaterialDialog.Builder(this)
                 .content(message)
-                .progress(true,0)
+                .progress(true, 0)
                 .widgetColor((ContextCompat.getColor(this, R.color.buttonDialog)))
-                    .show();
+                .show();
     }
 
-    public void dismissProgressDialog(){
-        if(mProgressDialog != null && mProgressDialog.isShowing()) {
+    public void dismissProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }

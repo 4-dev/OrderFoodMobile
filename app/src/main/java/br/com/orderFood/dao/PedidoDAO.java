@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.orderFood.model.entity.ItensPedido;
 import br.com.orderFood.model.entity.Pedido;
 import br.com.orderFood.model.model.ItensModel;
 
@@ -138,6 +139,33 @@ public class PedidoDAO extends GenericDAO<Pedido> {
             model.setQuantidade(cursor.getDouble(2));
             model.setValorTotal(cursor.getDouble(3));
             model.setValorUnitario(cursor.getDouble(4));
+
+            resultados.add(model);
+            model = null;
+        }
+
+        return resultados;
+    }
+
+    public List<ItensPedido> getItensPedido(Pedido pedido) throws SQLException {
+
+        StringBuffer sql = new StringBuffer();
+        Cursor cursor = null;
+        List<ItensPedido> resultados = new ArrayList<>();
+
+        sql.append("SELECT CODIGO, CODPRODUTO, CODPEDIDO, QUANTIDADE, VALORTOTAL, VALORUNITARIO FROM ITEMPEDIDO WHERE CODPEDIDO = " + pedido.getCodigo());
+
+        cursor = dataBase.rawQuery(sql.toString(), null);
+
+        while (cursor.moveToNext()) {
+
+            ItensPedido model = new ItensPedido();
+            model.setCodigo(cursor.getInt(0));
+            model.setCodProduto(cursor.getInt(1));
+            model.setCodPedido(cursor.getInt(2));
+            model.setQuantidade(cursor.getDouble(3));
+            model.setValorTotal(cursor.getDouble(4));
+            model.setValorUnitario(cursor.getDouble(5));
 
             resultados.add(model);
             model = null;

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
@@ -15,10 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +32,17 @@ import br.com.orderFood.R;
 import br.com.orderFood.activity.DetailFullScreenActivity;
 import br.com.orderFood.adapter.ContextMenuAdapter;
 import br.com.orderFood.adapter.PedidosAdapter;
+import br.com.orderFood.dto.PedidoSync;
+import br.com.orderFood.interfaces.APIServiceConection;
 import br.com.orderFood.interfaces.RecyclerViewOnClickListenerHack;
 import br.com.orderFood.model.bo.PedidoBO;
 import br.com.orderFood.model.entity.Pedido;
 import br.com.orderFood.model.model.ContextMenuItem;
+import br.com.orderFood.retrofit.PedidoSyncGson;
+import br.com.orderFood.utils.UtilTCM;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author Ruan Alves
@@ -96,7 +108,9 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
                     pedidoBO = null;
 
                     if(listPedidos != null && listPedidos.size() > 0){
-                        showAlert(getString(R.string.msg_inf_construcao));
+                        PedidoSync pedidoSync = new PedidoSync();
+                        pedidoSync.setListPedidos(listPedidos);
+                        enviarPedios(pedidoSync);
                     } else {
                         showAlert(getString(R.string.msg_inf_pedidospend));
                     }
@@ -182,6 +196,67 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         }
 
     }
+
+    private void enviarPedios(final PedidoSync pedidoSync){
+
+        if (UtilTCM.verifyConnection(getActivity())) {
+
+            showProgressDialog(getString(R.string.mensagem_progress));
+            String URL = "https://orderfood.cfapps.io/pedido/";
+            Gson gson = new GsonBuilder().registerTypeAdapter(PedidoSync.class, new PedidoSyncGson()).create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
+            final Call<String> requester = serviceConection.enviarPedidos(pedidoSync);
+
+            new Thread() {
+
+                public void run() {
+
+                    try {
+
+                        Looper.prepare();
+
+                        String retorno = requester.execute().body();
+                        if (retorno != null) {
+
+                        } else {
+                            mTextToast = getString(R.string.mensagem_naohainformacoes);
+                            getActivity().runOnUiThread(changeMessageToastALERT);
+                        }
+
+                        mProgressDialog.dismiss();
+                        Thread.interrupted();
+
+                    } catch (IOException e) {
+                        mProgressDialog.dismiss();
+                        mTextToast = getString(R.string.mensagem_conexao_naoestabelecida);
+                        getActivity().runOnUiThread(changeMessageToastERROR);
+                        Thread.interrupted();
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        mProgressDialog.dismiss();
+                        mTextToast = getString(R.string.mensagem_erro_admin);
+                        getActivity().runOnUiThread(changeMessageToastERROR);
+                        Thread.interrupted();
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }.start();
+
+        } else {
+            showAlertRede();
+        }
+
+    }
+
+
 
     @Override
     public void onLongPressClickListener(View view, int position) {
