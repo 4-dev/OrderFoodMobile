@@ -5,12 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -21,10 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.orderFood.R;
+import br.com.orderFood.adapter.ContextMenuAdapter;
 import br.com.orderFood.adapter.PedidosAdapter;
 import br.com.orderFood.interfaces.RecyclerViewOnClickListenerHack;
 import br.com.orderFood.model.bo.PedidoBO;
 import br.com.orderFood.model.entity.Pedido;
+import br.com.orderFood.model.model.ContextMenuItem;
 
 /**
  * @author Ruan Alves
@@ -184,6 +188,49 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
     @Override
     public void onClickListener(View view, final int positionClick) {
+
+        float scale = getActivity().getResources().getDisplayMetrics().density;
+
+        List<ContextMenuItem> itens = new ArrayList<>();
+        itens.add(new ContextMenuItem(R.drawable.ic_edit_cinzax_24dp, "Editar"));
+        itens.add(new ContextMenuItem(R.drawable.ic_reorder_cinza_24dp , "Itens"));
+        itens.add(new ContextMenuItem(R.drawable.ic_delete_cinza_24dp , "Excluir"));
+
+        final ContextMenuAdapter adapters = new ContextMenuAdapter(getActivity(), itens);
+        final ListPopupWindow listPopupWindow = new ListPopupWindow(getActivity());
+        listPopupWindow.setAdapter(adapters);
+        listPopupWindow.setAnchorView(view);
+        listPopupWindow.setWidth((int) (240 * scale + 0.5f));
+        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                PedidosAdapter adapter = (PedidosAdapter) mRecyclerView.getAdapter();
+                Pedido entrega = (Pedido) adapter.getItemAtPosition(positionClick);
+                EventBus.getDefault().post(entrega);
+
+                if (position == 0) {
+
+                    /*listPopupWindow.dismiss();
+                    Intent form = new Intent(getActivity(), RotaCargaActivity.class);
+                    form.putExtra("ENDERECO_CLIENTE", entrega.getLocationcliente());
+                    getActivity().startActivity(form);*/
+
+                    showAlert("Em Construção...");
+
+                } else if (position == 1) {
+                    showAlert("Em Construção...");
+                } else if (position == 2) {
+                    //listPopupWindow.dismiss();
+                    //checarCheckinCheckout(entrega);
+                    showAlert("Em Construção...");
+                }
+            }
+        });
+
+        listPopupWindow.setModal(true);
+        listPopupWindow.getBackground().setAlpha(0);
+        listPopupWindow.show();
 
     }
 
