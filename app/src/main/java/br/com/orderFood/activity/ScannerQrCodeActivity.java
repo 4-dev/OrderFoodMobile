@@ -90,7 +90,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
     private void verificarMesaQRCode() {
 
         showProgressDialog("Aguarde verificando conexão...");
-        String URL = "http://10.0.0.110:9090/mesa/";
+        String URL = "https://orderfood.cfapps.io/mesa/";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
@@ -98,7 +98,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
                 .build();
 
         APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
-        final Call<String> requester = serviceConection.verificarColaborador(2);
+        final Call<String> requester = serviceConection.verificarColaborador(1);
 
         new Thread() {
 

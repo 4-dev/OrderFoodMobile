@@ -35,6 +35,17 @@
         <activity
             android:name=".activity.MainActivity" />
 
+        <activity
+            android:name=".activity.DetailFullScreenActivity"
+            android:label="Dialog Informação"
+            android:theme="@style/Base.Theme.DialogFull"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:parentActivityName="br.com.orderFood.activity.DetailFullScreenActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.orderFood.activity.DetailFullScreenActivity" />
+        </activity>
+
     </application>
 
 </manifest>

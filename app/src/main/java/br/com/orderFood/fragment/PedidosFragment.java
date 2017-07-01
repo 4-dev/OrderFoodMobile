@@ -2,6 +2,7 @@ package br.com.orderFood.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.orderFood.R;
+import br.com.orderFood.activity.DetailFullScreenActivity;
 import br.com.orderFood.adapter.ContextMenuAdapter;
 import br.com.orderFood.adapter.PedidosAdapter;
 import br.com.orderFood.interfaces.RecyclerViewOnClickListenerHack;
@@ -206,8 +208,7 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 PedidosAdapter adapter = (PedidosAdapter) mRecyclerView.getAdapter();
-                Pedido entrega = (Pedido) adapter.getItemAtPosition(positionClick);
-                EventBus.getDefault().post(entrega);
+                Pedido pedido = (Pedido) adapter.getItemAtPosition(positionClick);
 
                 if (position == 0) {
 
@@ -217,12 +218,19 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
                     getActivity().startActivity(form);*/
 
                     showAlert("Em Construção...");
+                    listPopupWindow.dismiss();
 
                 } else if (position == 1) {
-                    showAlert("Em Construção...");
+
+                    listPopupWindow.dismiss();
+                    Intent form = new Intent(getActivity(), DetailFullScreenActivity.class);
+                    startActivity(form);
+                    EventBus.getDefault().postSticky(pedido);
+
                 } else if (position == 2) {
                     //listPopupWindow.dismiss();
                     //checarCheckinCheckout(entrega);
+                    listPopupWindow.dismiss();
                     showAlert("Em Construção...");
                 }
             }

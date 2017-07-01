@@ -3,12 +3,13 @@ package br.com.orderFood.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.orderFood.model.entity.Pedido;
+import br.com.orderFood.model.model.ItensModel;
 
 /**
  * Created by Ruan Alves
@@ -109,6 +110,34 @@ public class PedidoDAO extends GenericDAO<Pedido> {
             model.setObservacao(cursor.getString(3));
             model.setStatus(cursor.getString(4));
             model.setQtItens(cursor.getInt(5));
+
+            resultados.add(model);
+            model = null;
+        }
+
+        return resultados;
+    }
+
+    public List<ItensModel> getItensModel(int numPedido) throws SQLException {
+
+        StringBuffer sql = new StringBuffer();
+        Cursor cursor = null;
+        List<ItensModel> resultados = new ArrayList<>();
+
+        sql.append("SELECT I.CODPRODUTO, P.DESCRICAO , I.QUANTIDADE, I.VALORTOTAL, I.VALORUNITARIO \n");
+        sql.append("FROM ITEMPEDIDO I, PRODUTO P WHERE I.CODPRODUTO = P.CODIGO \n");
+        sql.append("AND I.CODPEDIDO = " + numPedido);
+
+        cursor = dataBase.rawQuery(sql.toString(), null);
+
+        while (cursor.moveToNext()) {
+
+            ItensModel model = new ItensModel();
+            model.setCodProduto(cursor.getInt(0));
+            model.setProduto(cursor.getString(1));
+            model.setQuantidade(cursor.getDouble(2));
+            model.setValorTotal(cursor.getDouble(3));
+            model.setValorUnitario(cursor.getDouble(4));
 
             resultados.add(model);
             model = null;

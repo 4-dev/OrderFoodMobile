@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import br.com.orderFood.R;
-import br.com.orderFood.dialog.FullScreen_ProdutosDialog;
+import br.com.orderFood.dialog.FullScreen_ItensDialog;
 
 /**
  * @author Ruan Alves
@@ -26,7 +26,7 @@ public class DetailFullScreenActivity extends BaseActivity {
     private void crearFullScreenDialog() {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FullScreen_ProdutosDialog newFragment = new FullScreen_ProdutosDialog();
+        FullScreen_ItensDialog newFragment = new FullScreen_ItensDialog();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

@@ -10,6 +10,7 @@ import br.com.orderFood.dao.ItensPedidoDAO;
 import br.com.orderFood.dao.PedidoDAO;
 import br.com.orderFood.model.entity.ItensPedido;
 import br.com.orderFood.model.entity.Pedido;
+import br.com.orderFood.model.model.ItensModel;
 
 /**
  * Created by Ruan Alves
@@ -85,6 +86,25 @@ public class PedidoBO {
         mDao = null;
 
         return listPedidos;
+
+    }
+
+    public List<ItensModel> getItensModel(int numPedido) {
+
+        try {
+
+            mDao = new PedidoDAO(mContext);
+            List<ItensModel> listItens = new ArrayList<>();
+            listItens = mDao.getItensModel(numPedido);
+            mDao = null;
+
+            return listItens;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return null;
 
     }
 

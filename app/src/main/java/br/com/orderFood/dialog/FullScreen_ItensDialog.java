@@ -18,20 +18,23 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.orderFood.R;
 import br.com.orderFood.adapter.ListItensAdapter;
+import br.com.orderFood.model.bo.PedidoBO;
+import br.com.orderFood.model.entity.Pedido;
 import br.com.orderFood.model.model.ItensModel;
 
-public class FullScreen_ProdutosDialog extends DialogFragment {
+public class FullScreen_ItensDialog extends DialogFragment {
 
     private RecyclerView mRecyclerView;
     private ListItensAdapter adapter;
     private List<ItensModel> mList;
 
-    public FullScreen_ProdutosDialog() {
+    public FullScreen_ItensDialog() {
 
     }
 
@@ -46,7 +49,7 @@ public class FullScreen_ProdutosDialog extends DialogFragment {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.mipmap.ic_close);
-            actionBar.setTitle("Produtos");
+            actionBar.setTitle("Itens do Pedido");
         }
 
     }
@@ -64,12 +67,12 @@ public class FullScreen_ProdutosDialog extends DialogFragment {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
-    public void onEvent(List<ItensModel> listItens) {
+    public void onEvent(Pedido pedido) {
 
         if(mList == null) mList = new ArrayList<>();
-        mList = listItens;
+        mList = getListItensPedido(pedido);
 
-        EventBus.getDefault().removeStickyEvent(listItens);
+        EventBus.getDefault().removeStickyEvent(pedido);
 
         adapter = new ListItensAdapter(getActivity(), mList);
         mRecyclerView.setAdapter(adapter);
@@ -77,10 +80,20 @@ public class FullScreen_ProdutosDialog extends DialogFragment {
 
     }
 
+    public List<ItensModel> getListItensPedido(Pedido pedido) {
+
+        List<ItensModel> listItens = new ArrayList<>();
+        PedidoBO pedidoBO = new PedidoBO(getActivity());
+        listItens = pedidoBO.getItensModel(pedido.getCodigo());
+
+        return listItens;
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fullscreen_produto_dialog, container, false);
+        View view = inflater.inflate(R.layout.fullscreen_itens_dialog, container, false);
         init(view);
         return view;
 
@@ -96,7 +109,7 @@ public class FullScreen_ProdutosDialog extends DialogFragment {
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                break;
+                getActivity().finish();
         }
         return super.onOptionsItemSelected(item);
     }
