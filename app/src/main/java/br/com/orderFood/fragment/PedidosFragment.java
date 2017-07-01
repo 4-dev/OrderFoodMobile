@@ -223,7 +223,7 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
                         String retorno = requester.execute().body();
                         if (retorno != null) {
-
+                            showAlert("DEU CERTOOOOOOO!");
                         } else {
                             mTextToast = getString(R.string.mensagem_naohainformacoes);
                             getActivity().runOnUiThread(changeMessageToastALERT);
