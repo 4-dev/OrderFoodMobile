@@ -75,12 +75,14 @@ public class AdaptadorProdutos
                 .into(viewHolder.imagen);
         viewHolder.nombre.setText(item.getDescricao());
         viewHolder.precio.setText("R$ " + item.getValor());
+        viewHolder.linearlayout_color.setBackgroundResource(R.color.accentColor);
 
         if(listItens != null && listItens .size() > 0) {
             for (Item itemAd : listItens) {
-                if (itemAd.getCodProduto() == items.get(i).getCodigo())
+                if (itemAd.getCodProduto() == items.get(i).getCodigo()) {
                     viewHolder.linearlayout_color.setBackgroundResource(R.color.pedidoAdicionado);
-                else viewHolder.linearlayout_color.setBackgroundResource(R.color.accentColor);
+                    break;
+                }
             }
         } else {
             viewHolder.linearlayout_color.setBackgroundResource(R.color.accentColor);
