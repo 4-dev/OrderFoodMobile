@@ -115,4 +115,16 @@ public class PedidoBO {
 
     }
 
+    public void deletarPedido(Pedido pedido){
+
+        mDao = new PedidoDAO(mContext);
+        mDao.deletarPedido(pedido.getCodigo());
+        mDao = null;
+
+        ItensPedidoDAO pedidoItemDAO = new ItensPedidoDAO(mContext);
+        pedidoItemDAO.deletarItensPedido(pedido.getCodigo());
+        pedidoItemDAO = null;
+
+    }
+
 }

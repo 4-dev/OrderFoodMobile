@@ -174,4 +174,12 @@ public class PedidoDAO extends GenericDAO<Pedido> {
         return resultados;
     }
 
+    public void deletarPedido(int numPedido){
+
+        String[] args = {String.valueOf(numPedido)};
+
+        dataBase.delete(NOME_TABELA, "CODIGO = ?", args);
+
+    }
+
 }

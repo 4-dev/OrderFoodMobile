@@ -31,5 +31,6 @@
     <string name="mensagem_conexao_naoestabelecida">Conexão não estabelecida...</string>
     <string name="mensagem_configuracao">Por favor configure o aplicativo para prosseguir</string>
     <string name="mensagem_erro_padrao">Erro ao realizar operação!</string>
+    <string name="mensagem_sucesso">Operação realizada com sucesso!</string>
 
 </resources>

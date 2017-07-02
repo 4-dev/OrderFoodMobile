@@ -303,10 +303,16 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
                     EventBus.getDefault().postSticky(pedido);
 
                 } else if (position == 2) {
-                    //listPopupWindow.dismiss();
-                    //checarCheckinCheckout(entrega);
-                    listPopupWindow.dismiss();
+
                     showAlert("Em Construção...");
+                    PedidoBO pedidoBO = new PedidoBO(getActivity());
+                    pedidoBO.deletarPedido(pedido);
+                    pedidoBO = null;
+
+                    listPopupWindow.dismiss();
+                    showAlert(getString(R.string.mensagem_sucesso));
+                    setListDados();
+
                 }
             }
         });

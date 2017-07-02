@@ -57,5 +57,12 @@ public class ItensPedidoDAO extends GenericDAO<ItensPedido> {
         return null;
     }
 
+    public void deletarItensPedido(int numPedido){
+
+        String[] args = {String.valueOf(numPedido)};
+
+        dataBase.delete(NOME_TABELA, "CODPEDIDO = ?", args);
+
+    }
 
 }
