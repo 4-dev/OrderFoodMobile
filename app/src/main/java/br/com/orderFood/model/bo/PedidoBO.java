@@ -33,7 +33,27 @@ public class PedidoBO {
             pedido = buscaValorTotal(pedido);
             idPedido = mDao.salvarRetornID(pedido);
 
-            inserirItensPedido(pedido.getItens(), idPedido, pedido);
+            inserirItensPedido(pedido.getItens(), idPedido);
+
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean alterarPedido(Pedido pedido) {
+
+        try {
+
+            mDao = new PedidoDAO(mContext);
+            ItensPedidoDAO itemDao = new ItensPedidoDAO(mContext);
+
+            pedido = buscaValorTotal(pedido);
+            itemDao.deletarItensPedido(pedido.getCodigo());
+
+            mDao.alterarPedido(pedido);
+            inserirItensPedido(pedido.getItens(), pedido.getCodigo());
 
             return true;
 
@@ -55,7 +75,7 @@ public class PedidoBO {
         return pedido;
     }
 
-    private void inserirItensPedido(List<ItensPedido> itens, long idPedido, Pedido pedido) throws Exception {
+    private void inserirItensPedido(List<ItensPedido> itens, long idPedido) throws Exception {
 
         ItensPedidoDAO itemDao = new ItensPedidoDAO(mContext);
 
@@ -64,6 +84,8 @@ public class PedidoBO {
             item.setCodPedido((int) idPedido);
             itemDao.salvar(item);
         }
+
+        itemDao = null;
 
     }
 
@@ -94,6 +116,11 @@ public class PedidoBO {
 
         return listPedidos;
 
+    }
+
+    public List<ItensPedido> getItensPedido(Pedido pedido) throws SQLException {
+        mDao = new PedidoDAO(mContext);
+        return mDao.getItensPedido(pedido);
     }
 
     public List<ItensModel> getItensModel(int numPedido) {

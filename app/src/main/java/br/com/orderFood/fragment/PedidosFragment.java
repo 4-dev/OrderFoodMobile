@@ -30,6 +30,7 @@ import java.util.List;
 
 import br.com.orderFood.R;
 import br.com.orderFood.activity.DetailFullScreenActivity;
+import br.com.orderFood.activity.PedidoActivity;
 import br.com.orderFood.adapter.ContextMenuAdapter;
 import br.com.orderFood.adapter.PedidosAdapter;
 import br.com.orderFood.dto.PedidoSync;
@@ -287,13 +288,12 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
                 if (position == 0) {
 
-                    /*listPopupWindow.dismiss();
-                    Intent form = new Intent(getActivity(), RotaCargaActivity.class);
-                    form.putExtra("ENDERECO_CLIENTE", entrega.getLocationcliente());
-                    getActivity().startActivity(form);*/
-
-                    showAlert("Em Construção...");
                     listPopupWindow.dismiss();
+
+                    Intent form = new Intent(getActivity(), PedidoActivity.class);
+                    startActivity(form);
+
+                    EventBus.getDefault().postSticky(pedido);
 
                 } else if (position == 1) {
 
@@ -304,7 +304,6 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
                 } else if (position == 2) {
 
-                    showAlert("Em Construção...");
                     PedidoBO pedidoBO = new PedidoBO(getActivity());
                     pedidoBO.deletarPedido(pedido);
                     pedidoBO = null;

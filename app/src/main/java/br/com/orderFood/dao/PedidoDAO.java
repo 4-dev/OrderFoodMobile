@@ -20,7 +20,7 @@ public class PedidoDAO extends GenericDAO<Pedido> {
     private static final String TAG = "PEDIDO_DAO";
     private static final String NOME_TABELA = "PEDIDO";
     public static final String SCRIPT_CRIACAO_TABELA = "CREATE TABLE  IF NOT EXISTS " + NOME_TABELA + " ([CODIGO] INTEGER PRIMARY KEY AUTOINCREMENT, [DTEMISSAO] TEXT," +
-            "[VALORTOTAL] REAL, [OBSERVACAO] TEXT, [STATUS] TEXT, [QTITENS] INTEGER)";
+            "[VALORTOTAL] REAL, [OBSERVACAO] TEXT, [STATUS] TEXT, [QTITENS] INTEGER, [CODMESA] INTEGER)";
     public static final String SCRIPT_DELECAO_TABELA = "DROP TABLE IF EXISTS " + NOME_TABELA;
     public static final String SCRIPT_LIMPAR_TABELA = "DELETE FROM " + NOME_TABELA;
 
@@ -30,6 +30,7 @@ public class PedidoDAO extends GenericDAO<Pedido> {
     private static final String COLUNA_OBSERVACAO = "OBSERVACAO";
     private static final String COLUNA_STATUS = "STATUS";
     private static final String COLUNA_QTITENS = "QTITENS";
+    private static final String COLUNA_CODMESA = "CODMESA";
 
     public PedidoDAO(Context context) {
         super(context);
@@ -54,6 +55,7 @@ public class PedidoDAO extends GenericDAO<Pedido> {
         contentValues.put(COLUNA_OBSERVACAO, pedido.getObservacao());
         contentValues.put(COLUNA_STATUS, pedido.getStatus());
         contentValues.put(COLUNA_QTITENS, pedido.getQtItens());
+        contentValues.put(COLUNA_CODMESA, pedido.getCodMesa());
 
         return contentValues;
 
@@ -71,7 +73,7 @@ public class PedidoDAO extends GenericDAO<Pedido> {
         Cursor cursor = null;
         List<Pedido> resultados = new ArrayList<>();
 
-        sql.append("SELECT CODIGO, DTEMISSAO, VALORTOTAL, OBSERVACAO, STATUS, QTITENS FROM PEDIDO");
+        sql.append("SELECT CODIGO, DTEMISSAO, VALORTOTAL, OBSERVACAO, STATUS, QTITENS, CODMESA FROM PEDIDO");
 
         cursor = dataBase.rawQuery(sql.toString(), null);
 
@@ -84,6 +86,7 @@ public class PedidoDAO extends GenericDAO<Pedido> {
             model.setObservacao(cursor.getString(3));
             model.setStatus(cursor.getString(4));
             model.setQtItens(cursor.getInt(5));
+            model.setCodMesa(cursor.getInt(6));
 
             resultados.add(model);
             model = null;
@@ -98,7 +101,7 @@ public class PedidoDAO extends GenericDAO<Pedido> {
         Cursor cursor = null;
         List<Pedido> resultados = new ArrayList<>();
 
-        sql.append("SELECT CODIGO, DTEMISSAO, VALORTOTAL, OBSERVACAO, STATUS, QTITENS FROM PEDIDO WHERE STATUS = 'PENDENTE'");
+        sql.append("SELECT CODIGO, DTEMISSAO, VALORTOTAL, OBSERVACAO, STATUS, QTITENS, CODMESA FROM PEDIDO WHERE STATUS = 'PENDENTE'");
 
         cursor = dataBase.rawQuery(sql.toString(), null);
 
@@ -111,6 +114,7 @@ public class PedidoDAO extends GenericDAO<Pedido> {
             model.setObservacao(cursor.getString(3));
             model.setStatus(cursor.getString(4));
             model.setQtItens(cursor.getInt(5));
+            model.setCodMesa(cursor.getInt(6));
 
             resultados.add(model);
             model = null;
@@ -179,6 +183,18 @@ public class PedidoDAO extends GenericDAO<Pedido> {
         String[] args = {String.valueOf(numPedido)};
 
         dataBase.delete(NOME_TABELA, "CODIGO = ?", args);
+
+    }
+
+    public void alterarPedido (Pedido pedido) throws SQLException{
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUNA_QTITENS, pedido.getQtItens());
+        contentValues.put(COLUNA_VALORTOTAL, pedido.getValorTotal());
+
+        String[] args = {pedido.getCodigo()+""};
+        dataBase.update(NOME_TABELA, contentValues, "CODIGO = ?", args);
 
     }
 

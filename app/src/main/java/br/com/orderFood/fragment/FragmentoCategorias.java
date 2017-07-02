@@ -25,9 +25,6 @@ import br.com.orderFood.helper.DialogContagemHelper;
 
 public class FragmentoCategorias extends Fragment {
 
-    private static final String INDICE_SECCION
-            = "com.restaurantericoparico.FragmentoCategoriasTab.extra.INDICE_SECCION";
-
     private AppBarLayout appBarLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -78,36 +75,6 @@ public class FragmentoCategorias extends Fragment {
         super.onDestroyView();
         appBarLayout.removeView(tabLayout);
     }
-
-    /*
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_categorias, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-
-        } else if (id == R.id.action_salvar) {
-            //getActivity().finish();
-        }
-
-        return true;
-
-    }
-
-    */
 
     public class AdaptadorSecciones extends FragmentStatePagerAdapter {
         private final List<Fragment> fragmentos = new ArrayList<>();

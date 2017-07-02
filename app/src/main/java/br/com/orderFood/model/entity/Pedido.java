@@ -13,11 +13,20 @@ public class Pedido implements Serializable, EntidadePersistivel {
     private static final long serialVersionUID = -221105128135301277L;
 
     private int codigo;
+    private int codMesa;
     private String dtEmissao;
     private Double valorTotal;
     private String observacao;
     private String status;
     private List<ItensPedido> itens;
+
+    public int getCodMesa() {
+        return codMesa;
+    }
+
+    public void setCodMesa(int codMesa) {
+        this.codMesa = codMesa;
+    }
 
     private int qtItens;
 

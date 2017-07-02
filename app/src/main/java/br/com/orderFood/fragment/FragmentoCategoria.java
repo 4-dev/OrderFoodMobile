@@ -55,6 +55,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
     private List<Item> listItens;
     private List<Produto> listProdutos;
     private Parametro parametro;
+    private Pedido pedido;
 
     public static FragmentoCategoria novaInstancia(int indiceSeccion) {
         FragmentoCategoria fragment = new FragmentoCategoria();
@@ -155,14 +156,6 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         reciclador.setLayoutManager(layoutManager);
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        setarListagemDados();
-
     }
 
     private void setarListagemDados(){
@@ -372,6 +365,43 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         this.parametro = parametro;
         EventBus.getDefault().removeStickyEvent(parametro);
+        setarListagemDados();
+
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
+    public void onEvent(Pedido pedido) {
+
+        try {
+
+            this.pedido = pedido;
+
+            listItens = new ArrayList<>();
+            PedidoBO pedidoBO = new PedidoBO(getActivity());
+            List<ItensPedido> itens = pedidoBO.getItensPedido(pedido);
+            pedidoBO = null;
+
+            for (ItensPedido i : itens) {
+
+                Item item = new Item();
+                item.setValorUnit(i.getValorUnitario());
+                item.setValor(i.getValorTotal());
+                item.setQuantidade(i.getQuantidade());
+                item.setCodProduto(i.getCodProduto());
+
+                listItens.add(item);
+                item = null;
+
+            }
+
+            EventBus.getDefault().removeStickyEvent(pedido);
+            setarListagemDados();
+            calcularValorToolbar();
+
+        }catch (SQLException e) {
+            showAlert(getString(R.string.msg_erro_inesperado));
+            e.printStackTrace();
+        }
 
     }
 
@@ -407,19 +437,31 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
             if(validarPedido()){
 
-                Pedido pedido = new Pedido();
-                pedido.setStatus("PENDENTE");
-                pedido.setDtEmissao(Utils.retornaDateFormatadaDDMMYY_HHmmss(new Date()));
-                pedido.setItens(getItensPedido(listItens));
-                pedido.setQtItens(listItens.size());
-                pedido.setObservacao("");
-
                 PedidoBO pedidoBO = new PedidoBO(getActivity());
-                pedidoBO.salvarPedido(pedido);
+
+                if(pedido == null || pedido.getCodigo() == 0){
+
+                    Pedido pedido = new Pedido();
+                    pedido.setStatus("PENDENTE");
+                    pedido.setDtEmissao(Utils.retornaDateFormatadaDDMMYY_HHmmss(new Date()));
+                    pedido.setItens(getItensPedido(listItens));
+                    pedido.setQtItens(listItens.size());
+                    pedido.setObservacao("");
+                    pedido.setCodMesa(parametro.getCodMesa());
+
+                    pedidoBO.salvarPedido(pedido);
+
+                } else {
+
+                    pedido.setItens(getItensPedido(listItens));
+                    pedido.setQtItens(listItens.size());
+
+                    pedidoBO.alterarPedido(pedido);
+
+                }
+
+                //EventBus.getDefault().postSticky(pedido);
                 pedidoBO = null;
-
-                EventBus.getDefault().postSticky(pedido);
-
                 showAlert("Mensagem de sucesso");
                 getActivity().finish();
 
