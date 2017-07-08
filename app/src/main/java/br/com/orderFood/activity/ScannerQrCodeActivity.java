@@ -1,5 +1,6 @@
 package br.com.orderFood.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,14 +8,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
 
 import br.com.orderFood.R;
+import br.com.orderFood.dto.ObjectSync;
 import br.com.orderFood.interfaces.APIServiceConection;
 import br.com.orderFood.model.bo.ParametroBO;
+import br.com.orderFood.model.bo.RetornoQrCodeBO;
+import br.com.orderFood.retrofit.ObjectSyncGson;
 import br.com.orderFood.utils.UtilTCM;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -89,16 +95,19 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
     private void verificarMesaQRCode() {
 
+        final Activity activity = this;
         showProgressDialog(getString(R.string.mensagem_progress));
-        String URL = "https://orderfood.cfapps.io/mesa/";
+        //String URL = "https://orderfood.cfapps.io/mesa/";
+        String URL = "https://192.168.6.46:9090/mesa/";
+        Gson gson = new GsonBuilder().registerTypeAdapter(ObjectSync.class, new ObjectSyncGson()).create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
-        final Call<String> requester = serviceConection.verificarColaborador(1);
+        final Call<ObjectSync> requester = serviceConection.verificarmesa(1);
 
         new Thread() {
 
@@ -106,19 +115,31 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
                 try {
 
-                    String retornoChamada = requester.execute().body();
+                    ParametroBO parametroBO = new ParametroBO(activity);
+                    parametroBO.limparTabelas();
+                    parametroBO = null;
 
-                    if (retornoChamada != null) {
+                    ObjectSync objectSync = requester.execute().body();
 
-                        /*ParametroBO parametroBO = new ParametroBO(this);
-                        parametroBO.limparTabelas();
-                        parametroBO = null;*/
+                    if (objectSync != null) {
 
-                        mTextToast = "RETORNO: " + retornoChamada;
-                        runOnUiThread(changeMessageToastALERT);
+                        if(!objectSync.getMensagem().equalsIgnoreCase("Mesa ocupada")){
 
-                        Intent form = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(form);
+                            RetornoQrCodeBO mCodeBO = new RetornoQrCodeBO(activity);
+                            if(mCodeBO.salvar(objectSync)){
+
+                                Intent form = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(form);
+                                finish();
+
+                            } else {
+                                mTextToast = "Ops! Ocorreu um erro inesperado";
+                            }
+
+                        } else {
+                            mTextToast = "Mesa ocupada";
+                            runOnUiThread(changeMessageToastALERT);
+                        }
 
                     } else {
                         mTextToast = "Sem Resultados...";

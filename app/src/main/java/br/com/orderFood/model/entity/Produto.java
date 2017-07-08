@@ -20,7 +20,7 @@ public class Produto implements Serializable, EntidadePersistivel {
     private String descricao;
     private int foto;
     private double valor;
-    private double qtEstoque;
+    private int qtEstoque;
 
     public Produto() {
 
@@ -33,7 +33,7 @@ public class Produto implements Serializable, EntidadePersistivel {
         this.foto = idDrawable;
     }
 
-    public Produto(int codigo, TipoCategoria categoria, double valor, String descricao, double qtEstoque) {
+    public Produto(int codigo, TipoCategoria categoria, double valor, String descricao, int qtEstoque) {
         this.codigo = codigo;
         this.categoria = categoria;
         this.valor = valor;
@@ -113,11 +113,11 @@ public class Produto implements Serializable, EntidadePersistivel {
         this.valor = valor;
     }
 
-    public Double getQtEstoque() {
+    public int getQtEstoque() {
         return qtEstoque;
     }
 
-    public void setQtEstoque(Double qtEstoque) {
+    public void setQtEstoque(int qtEstoque) {
         this.qtEstoque = qtEstoque;
     }
 

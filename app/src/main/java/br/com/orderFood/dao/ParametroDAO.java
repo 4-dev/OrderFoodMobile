@@ -2,6 +2,9 @@ package br.com.orderFood.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+
+import java.sql.SQLException;
 
 import br.com.orderFood.model.entity.Parametro;
 
@@ -63,6 +66,27 @@ public class ParametroDAO extends GenericDAO<Parametro> {
         dataBase.execSQL(PedidoDAO.SCRIPT_LIMPAR_TABELA);
         dataBase.execSQL(ProdutoDAO.SCRIPT_LIMPAR_TABELA);
         dataBase.execSQL(ItensPedidoDAO.SCRIPT_LIMPAR_TABELA);
+    }
+
+    public Parametro getParametro() throws SQLException{
+
+        Parametro parametro = null;
+        String sql = "SELECT STATUS,CODMESA,CODEMPRESA,EMPRESA,LINKMESA FROM PARAMETRO LIMIT 1";
+        Cursor cursor = dataBase.rawQuery(sql, null);
+
+        if (cursor.moveToNext()) {
+
+            parametro = new Parametro();
+            parametro.setStatus(cursor.getString(0));
+            parametro.setCodMesa(cursor.getInt(1));
+            parametro.setCodEmpresa(cursor.getInt(2));
+            parametro.setEmpresa(cursor.getString(3));
+            parametro.setLinkAcesso(cursor.getString(4));
+
+        }
+
+
+        return parametro;
     }
 
 }

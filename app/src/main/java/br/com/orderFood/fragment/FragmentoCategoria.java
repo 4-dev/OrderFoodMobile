@@ -87,11 +87,13 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         for(Produto p : listProdutos){
             if(p.getCategoria().equals(TipoCategoria.PRATOS)){
 
-                if(p.getCodigo() == 1) p.setFoto(R.drawable.camarones);
+                p.setFoto(R.drawable.camarones);
+
+                /*if(p.getCodigo() == 1) p.setFoto(R.drawable.camarones);
                 if(p.getCodigo() == 2) p.setFoto(R.drawable.rosca);
                 if(p.getCodigo() == 3) p.setFoto(R.drawable.sushi);
                 if(p.getCodigo() == 4) p.setFoto(R.drawable.sandwich);
-                if(p.getCodigo() == 5) p.setFoto(R.drawable.lomo_cerdo);
+                if(p.getCodigo() == 5) p.setFoto(R.drawable.lomo_cerdo);*/
 
                 listResult.add(p);
 
@@ -110,11 +112,13 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         for(Produto p : listProdutos){
             if(p.getCategoria().equals(TipoCategoria.BEBIDAS)) {
 
-                if(p.getCodigo() == 6) p.setFoto(R.drawable.cafe);
+                p.setFoto(R.drawable.cafe);
+
+                /*if(p.getCodigo() == 6) p.setFoto(R.drawable.cafe);
                 if(p.getCodigo() == 7) p.setFoto(R.drawable.coctel);
                 if(p.getCodigo() == 8) p.setFoto(R.drawable.jugo_natural);
                 if(p.getCodigo() == 9) p.setFoto(R.drawable.coctel_jordano);
-                if(p.getCodigo() == 10) p.setFoto(R.drawable.vino_tinto);
+                if(p.getCodigo() == 10) p.setFoto(R.drawable.vino_tinto);*/
 
                 listResult.add(p);
             }
@@ -131,11 +135,13 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         for(Produto p : listProdutos){
             if(p.getCategoria().equals(TipoCategoria.SOBREMESAS)) {
 
-                if(p.getCodigo() == 11) p.setFoto(R.drawable.postre_vainilla);
+                p.setFoto(R.drawable.postre_vainilla);
+
+                /*if(p.getCodigo() == 11) p.setFoto(R.drawable.postre_vainilla);
                 if(p.getCodigo() == 12) p.setFoto(R.drawable.flan_celestial);
                 if(p.getCodigo() == 13) p.setFoto(R.drawable.cupcakes_festival);
                 if(p.getCodigo() == 14) p.setFoto(R.drawable.pastel_fresa);
-                if(p.getCodigo() == 15) p.setFoto(R.drawable.muffin_amoroso);
+                if(p.getCodigo() == 15) p.setFoto(R.drawable.muffin_amoroso);*/
 
                 listResult.add(p);
             }

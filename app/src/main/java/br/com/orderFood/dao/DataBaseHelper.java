@@ -12,7 +12,7 @@ import br.com.orderFood.interfaces.IBancoDeDados;
  */
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static final int VERSAO_BANCO_DADOS = 6;
+    private static final int VERSAO_BANCO_DADOS = 7;
 
     private static DataBaseHelper instance;
 

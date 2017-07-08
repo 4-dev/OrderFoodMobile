@@ -20,7 +20,7 @@ public class ProdutoDAO extends GenericDAO<Produto> {
     private static final String TAG = "PRODUTO_DAO";
     private static final String NOME_TABELA = "PRODUTO";
     public static final String SCRIPT_CRIACAO_TABELA = "CREATE TABLE IF NOT EXISTS " + NOME_TABELA + " ([CODIGO] INTEGER PRIMARY KEY, [CATEGORIA] TEXT," +
-                                                        "[DESCRICAO] TEXT, [FOTO] TEXT, [VALOR] REAL, [QTESTOQUE] REAL)";
+                                                        "[DESCRICAO] TEXT, [FOTO] TEXT, [VALOR] REAL, [QTESTOQUE] INTEGER)";
     public static final String SCRIPT_DELECAO_TABELA = "DROP TABLE IF EXISTS " + NOME_TABELA;
     public static final String SCRIPT_LIMPAR_TABELA = "DELETE FROM " + NOME_TABELA;
 
@@ -102,7 +102,7 @@ public class ProdutoDAO extends GenericDAO<Produto> {
             model.setCodigo(cursor.getInt(0));
             model.setDescricao(cursor.getString(1));
             model.setValor(cursor.getDouble(2));
-            model.setQtEstoque(cursor.getDouble(3));
+            model.setQtEstoque(cursor.getInt(3));
 
             if(cursor.getString(4).equalsIgnoreCase("PRATOS")) {
                 model.setCategoria(TipoCategoria.PRATOS);

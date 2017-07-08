@@ -24,6 +24,7 @@ import br.com.orderFood.adapter.TabsMainPrincipalAdapter;
 import br.com.orderFood.enumerador.TipoCategoria;
 import br.com.orderFood.fragment.PedidosFragment;
 import br.com.orderFood.fragment.ResumoFragment;
+import br.com.orderFood.model.bo.ParametroBO;
 import br.com.orderFood.model.bo.ProdutoBO;
 import br.com.orderFood.model.entity.Parametro;
 import br.com.orderFood.model.entity.Produto;
@@ -40,10 +41,11 @@ public class MainActivity extends BaseActivity {
 
         setmToolbar();
         tabs();
-        setarProdutos();
+        //setarProdutos();
 
     }
 
+    /*
     private void setarProdutos() {
 
         try {
@@ -80,6 +82,7 @@ public class MainActivity extends BaseActivity {
         }
 
     }
+    */
 
     private void setmToolbar() {
 
@@ -142,14 +145,12 @@ public class MainActivity extends BaseActivity {
         if (id == android.R.id.home) {
             finish();
         } else if (id == R.id.action_carrito) {
+
             Intent form = new Intent(getApplicationContext(), PedidoActivity.class);
             startActivity(form);
 
-            Parametro parametro = new Parametro();
-            parametro.setCodigo(1);
-            parametro.setCodEmpresa(1);
-            parametro.setCodMesa(2);
-            parametro.setStatus("Em Atendimento");
+            ParametroBO parametroBO = new ParametroBO(this);
+            Parametro parametro = parametroBO.getParametro();
 
             EventBus.getDefault().postSticky(parametro);
 
