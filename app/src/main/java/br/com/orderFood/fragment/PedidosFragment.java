@@ -95,6 +95,13 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         EventBus.getDefault().unregister(this);
     }
 
+    public Runnable changeListarDados = new Runnable() {
+        @Override
+        public void run() {
+            setListDados();
+        }
+    };
+
     private void buttonFabEnviarPedidos(View view) {
 
         mFab = (FloatingActionButton) view.findViewById(R.id.fab_enviarpedidos);
@@ -223,8 +230,17 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
                         Looper.prepare();
 
                         String retorno = requester.execute().body();
-                        if (retorno != null) {
-                            showAlert("DEU CERTOOOOOOO!");
+                        if (retorno != null && retorno.equalsIgnoreCase("OK")) {
+
+                            PedidoBO pedidoBO = new PedidoBO(getActivity());
+                            pedidoBO.alterarStatusPedido(pedidoSync.getListPedidos());
+                            pedidoBO = null;
+
+                            mTextToast = getString(R.string.mensagem_sucesso);
+                            getActivity().runOnUiThread(changeMessageToastALERT);
+
+                            getActivity().runOnUiThread(changeListarDados);
+
                         } else {
                             mTextToast = getString(R.string.mensagem_naohainformacoes);
                             getActivity().runOnUiThread(changeMessageToastALERT);

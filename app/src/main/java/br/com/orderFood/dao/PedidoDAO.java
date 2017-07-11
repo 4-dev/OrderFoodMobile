@@ -198,4 +198,15 @@ public class PedidoDAO extends GenericDAO<Pedido> {
 
     }
 
+    public void alterarStatusPedido (Pedido pedido) throws SQLException{
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUNA_STATUS, "ENVIADO");
+
+        String[] args = {pedido.getCodigo()+""};
+        dataBase.update(NOME_TABELA, contentValues, "CODIGO = ?", args);
+
+    }
+
 }

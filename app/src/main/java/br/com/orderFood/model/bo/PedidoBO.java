@@ -62,6 +62,21 @@ public class PedidoBO {
         }
     }
 
+    public void alterarStatusPedido(List<Pedido> listPedidos) {
+
+        try{
+
+            mDao = new PedidoDAO(mContext);
+
+            for(Pedido p :  listPedidos) mDao.alterarStatusPedido(p);
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+
     public Pedido buscaValorTotal(Pedido pedido) {
 
         double valorTotal = 0.0;
