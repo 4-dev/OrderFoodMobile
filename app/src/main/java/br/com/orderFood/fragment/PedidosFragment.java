@@ -306,10 +306,15 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
                     listPopupWindow.dismiss();
 
-                    Intent form = new Intent(getActivity(), PedidoActivity.class);
-                    startActivity(form);
+                    if(pedido.getStatus().equalsIgnoreCase("PENDENTE")) {
 
-                    EventBus.getDefault().postSticky(pedido);
+                        Intent form = new Intent(getActivity(), PedidoActivity.class);
+                        startActivity(form);
+
+                        EventBus.getDefault().postSticky(pedido);
+                    } else {
+                        showAlert(getString(R.string.informacao_pedido_nao_pendente));
+                    }
 
                 } else if (position == 1) {
 
@@ -320,13 +325,20 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
                 } else if (position == 2) {
 
-                    PedidoBO pedidoBO = new PedidoBO(getActivity());
-                    pedidoBO.deletarPedido(pedido);
-                    pedidoBO = null;
+                    if(pedido.getStatus().equalsIgnoreCase("PENDENTE")) {
 
-                    listPopupWindow.dismiss();
-                    showAlert(getString(R.string.mensagem_sucesso));
-                    setListDados();
+                        PedidoBO pedidoBO = new PedidoBO(getActivity());
+                        pedidoBO.deletarPedido(pedido);
+                        pedidoBO = null;
+
+                        listPopupWindow.dismiss();
+                        showAlert(getString(R.string.mensagem_sucesso));
+                        setListDados();
+
+                    } else {
+                        listPopupWindow.dismiss();
+                        showAlert(getString(R.string.informacao_pedido_nao_pendente));
+                    }
 
                 }
             }
