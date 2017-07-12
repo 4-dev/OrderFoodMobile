@@ -79,8 +79,10 @@ public class ScannerQrCodeActivity extends BaseActivity {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
 
                 } else {
+                    String SCAN_RESULT = data.getStringExtra("SCAN_RESULT"); // Deyvid Costa
+                    String formatName = data.getStringExtra("SCAN_RESULT_FORMAT"); // Deyvid Costa
 
-                    verificarMesaQRCode();
+                    verificarMesaQRCode(Integer.parseInt(SCAN_RESULT));
 
                     //Intent form = new Intent(getApplicationContext(), MainActivity.class);
                     //startActivity(form);
@@ -93,12 +95,12 @@ public class ScannerQrCodeActivity extends BaseActivity {
         }
     }
 
-    private void verificarMesaQRCode() {
+    private void verificarMesaQRCode(int SCAN_RESULT) {
 
         final Activity activity = this;
         showProgressDialog(getString(R.string.mensagem_progress));
-        //String URL = "https://orderfood.cfapps.io/mesa/";
-        String URL = "https://192.168.6.46:9090/mesa/";
+        String URL = "https://orderfood.cfapps.io/mesa/";
+        //String URL = "http://192.168.15.7:9090/mesa/";
         Gson gson = new GsonBuilder().registerTypeAdapter(ObjectSync.class, new ObjectSyncGson()).create();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -107,7 +109,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
                 .build();
 
         APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
-        final Call<ObjectSync> requester = serviceConection.verificarmesa(1);
+        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT);
 
         new Thread() {
 
@@ -123,10 +125,10 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
                     if (objectSync != null) {
 
-                        if(!objectSync.getMensagem().equalsIgnoreCase("Mesa ocupada")){
+                        if (!objectSync.getMensagem().equalsIgnoreCase("Mesa ocupada")) {
 
                             RetornoQrCodeBO mCodeBO = new RetornoQrCodeBO(activity);
-                            if(mCodeBO.salvar(objectSync)){
+                            if (mCodeBO.salvar(objectSync)) {
 
                                 Intent form = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(form);
