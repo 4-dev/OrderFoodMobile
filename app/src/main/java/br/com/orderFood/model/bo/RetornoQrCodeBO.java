@@ -50,8 +50,8 @@ public class RetornoQrCodeBO {
             }
 
             Parametro parametro = new Parametro();
-            parametro.setEmpresa("ORDER FOOD");
-            parametro.setCodMesa(1);
+            parametro.setEmpresa("OrderFood");
+            parametro.setCodMesa(objectSync.getCodmesa());
             parametro.setCodEmpresa(1);
             parametro.setStatus("Em Atendimento");
 

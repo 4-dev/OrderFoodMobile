@@ -13,6 +13,8 @@ import com.google.gson.GsonBuilder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 import br.com.orderFood.R;
@@ -80,10 +82,12 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
                 } else {
 
-                    String SCAN_RESULT = data.getStringExtra("SCAN_RESULT"); // Deyvid Costa
+                    String SCAN_RESULT_CODMESA = data.getStringExtra("SCAN_RESULT"); // Deyvid Costa
                     String formatName = data.getStringExtra("SCAN_RESULT_FORMAT"); // Deyvid Costa
 
-                    verificarMesaQRCode(Integer.parseInt(SCAN_RESULT));
+                    EventBus.getDefault().postSticky(SCAN_RESULT_CODMESA);
+
+                    verificarMesaQRCode(Integer.parseInt(SCAN_RESULT_CODMESA));
 
                     /*//verificarMesaQRCode(2);
 
@@ -98,7 +102,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
         }
     }
 
-    private void verificarMesaQRCode(int SCAN_RESULT) {
+    private void verificarMesaQRCode(final int SCAN_RESULT_CODMESA) {
 
         final Activity activity = this;
         showProgressDialog(getString(R.string.mensagem_progress));
@@ -113,7 +117,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
                 .build();
 
         APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
-        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT);
+        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT_CODMESA);
 
         new Thread() {
 
@@ -132,6 +136,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
                         if (!objectSync.getMensagem().equalsIgnoreCase("Mesa ocupada")) {
 
                             RetornoQrCodeBO mCodeBO = new RetornoQrCodeBO(activity);
+                            objectSync.setCodmesa(SCAN_RESULT_CODMESA);
                             if (mCodeBO.salvar(objectSync)) {
 
                                 Intent form = new Intent(getApplicationContext(), MainActivity.class);
