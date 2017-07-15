@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import java.sql.SQLException;
 
 import br.com.orderFood.R;
+import br.com.orderFood.dto.ObjectSync;
 import br.com.orderFood.helper.ResumoHelper;
 import br.com.orderFood.model.bo.PedidoBO;
 import br.com.orderFood.model.entity.Parametro;
@@ -59,7 +60,7 @@ public class ResumoFragment extends BaseFragment {
             PedidoBO pedidoBO = new PedidoBO(getActivity());
             Parametro parametro = new Parametro();
             parametro.setStatus("Em Atendimento");
-            parametro.setCodMesa(2);
+            parametro.setCodMesa(1);
             parametro.setEmpresa("Deyvid Solares e Lanches");
 
             mResumoHelper.setInformacoes(parametro, pedidoBO.getPedidos());
