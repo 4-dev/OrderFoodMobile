@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.orderFood.R;
+import br.com.orderFood.activity.PedidoActivity;
 import br.com.orderFood.adapter.AdaptadorProdutos;
 import br.com.orderFood.enumerador.TipoCategoria;
 import br.com.orderFood.helper.DialogContagemHelper;
@@ -52,7 +53,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
     private AdaptadorProdutos adaptador;
     private Produto produtoSelecionado;
     private DialogContagemHelper dialogContagemHelper;
-    private List<Item> listItens;
+    //private List<Item> listItens;
     private List<Produto> listProdutos;
     private Parametro parametro;
     private Pedido pedido;
@@ -164,6 +165,14 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setarListagemDados();
+
+    }
+
     private void setarListagemDados(){
 
         if (listProdutos == null) listProdutos = new ArrayList<>();
@@ -175,13 +184,13 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         switch (indiceSeccion) {
             case 0:
-                adaptador = new AdaptadorProdutos(listProdutosPRATOS(listProdutos),listItens);
+                adaptador = new AdaptadorProdutos(listProdutosPRATOS(listProdutos),((PedidoActivity) getActivity()).getListItensPedido());
                 break;
             case 1:
-                adaptador = new AdaptadorProdutos(listProdutosBEBIDAS(listProdutos),listItens);
+                adaptador = new AdaptadorProdutos(listProdutosBEBIDAS(listProdutos),((PedidoActivity) getActivity()).getListItensPedido());
                 break;
             case 2:
-                adaptador = new AdaptadorProdutos(listProdutosSOBREMESAS(listProdutos),listItens);
+                adaptador = new AdaptadorProdutos(listProdutosSOBREMESAS(listProdutos),((PedidoActivity) getActivity()).getListItensPedido());
                 break;
         }
 
@@ -213,9 +222,9 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
                         DialogContagemHelper helper = dialogContagemHelper;
                         Item item = helper.getItem();
 
-                        for (Item i : listItens) {
+                        for (Item i : ((PedidoActivity) getActivity()).getListItensPedido()) {
                             if (i.getCodProduto() == item.getCodProduto()) {
-                                listItens.remove(i);
+                                PedidoActivity.listItensPedido.remove(i);
                                 break;
                             }
                         }
@@ -232,16 +241,15 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
                         DialogContagemHelper helper = dialogContagemHelper;
 
-                        if(listItens == null) listItens = new ArrayList<>();
                         Item item = helper.getItem();
                         boolean isVerific = false;
 
-                        if(listItens.size() > 0) {
-                            for (Item i : listItens) {
+                        if(((PedidoActivity) getActivity()).getListItensPedido().size() > 0) {
+                            for (Item i : ((PedidoActivity) getActivity()).getListItensPedido()) {
                                 if (i.getCodProduto() == item.getCodProduto()) {
                                     if (item.getQuantidade() <= 0) {
                                         isVerific = true;
-                                        listItens.remove(i);
+                                        PedidoActivity.listItensPedido.remove(i);
                                         break;
                                     } else {
                                         isVerific = true;
@@ -253,10 +261,10 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
                                 }
                             }
 
-                            if(!isVerific)listItens.add(item);
+                            if(!isVerific)PedidoActivity.listItensPedido.add(item);
 
                         } else {
-                            listItens.add(item);
+                            PedidoActivity.listItensPedido.add(item);
                         }
 
                         setarListagemDados();
@@ -279,8 +287,8 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
             dialogContagemHelper = new DialogContagemHelper(getActivity(), dialog, produtoSelecionado);
 
-            if(listItens != null && listItens.size() > 0) {
-                for(Item item : listItens) {
+            if(((PedidoActivity) getActivity()).getListItensPedido() != null && ((PedidoActivity) getActivity()).getListItensPedido().size() > 0) {
+                for(Item item : ((PedidoActivity) getActivity()).getListItensPedido()) {
                     if(produtoSelecionado.getCodigo() == item.getCodProduto()){
                         dialogContagemHelper.setmQuantidadeDigitada(item.getQuantidade());
                     }
@@ -298,8 +306,8 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         double valorPedido = 0.0;
         String descricaoValor = "R$ 0,00";
-        if(listItens.size() > 0) {
-            for (Item i : listItens) {
+        if(((PedidoActivity) getActivity()).getListItensPedido().size() > 0) {
+            for (Item i : ((PedidoActivity) getActivity()).getListItensPedido()) {
                 valorPedido += i.getValor();
             }
         }
@@ -315,14 +323,14 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
     private boolean validarPedido() {
 
-        if(listItens == null || listItens.size() == 0){
+        if(((PedidoActivity) getActivity()).getListItensPedido() == null || ((PedidoActivity) getActivity()).getListItensPedido().size() == 0){
             showAlert("Não há itens inseridos para realizar o pedido!");
             return false;
         }
 
         double valorPedido = 0.0;
-        if(listItens.size() > 0) {
-            for (Item i : listItens) {
+        if(((PedidoActivity) getActivity()).getListItensPedido().size() > 0) {
+            for (Item i : ((PedidoActivity) getActivity()).getListItensPedido()) {
                 valorPedido += i.getValor();
             }
         }
@@ -382,7 +390,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
             this.pedido = pedido;
 
-            listItens = new ArrayList<>();
+            PedidoActivity.listItensPedido = new ArrayList<>();
             PedidoBO pedidoBO = new PedidoBO(getActivity());
             List<ItensPedido> itens = pedidoBO.getItensPedido(pedido);
             pedidoBO = null;
@@ -395,7 +403,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
                 item.setQuantidade(i.getQuantidade());
                 item.setCodProduto(i.getCodProduto());
 
-                listItens.add(item);
+                PedidoActivity.listItensPedido.add(item);
                 item = null;
 
             }
@@ -450,8 +458,8 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
                     Pedido pedido = new Pedido();
                     pedido.setStatus("PENDENTE");
                     pedido.setDtEmissao(Utils.retornaDateFormatadaDDMMYY_HHmmss(new Date()));
-                    pedido.setItens(getItensPedido(listItens));
-                    pedido.setQtItens(listItens.size());
+                    pedido.setItens(getItensPedido(((PedidoActivity) getActivity()).getListItensPedido()));
+                    pedido.setQtItens(((PedidoActivity) getActivity()).getListItensPedido().size());
                     pedido.setObservacao("");
                     pedido.setCodMesa(parametro.getCodMesa());
 
@@ -459,8 +467,8 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
                 } else {
 
-                    pedido.setItens(getItensPedido(listItens));
-                    pedido.setQtItens(listItens.size());
+                    pedido.setItens(getItensPedido(((PedidoActivity) getActivity()).getListItensPedido()));
+                    pedido.setQtItens(((PedidoActivity) getActivity()).getListItensPedido().size());
 
                     pedidoBO.alterarPedido(pedido);
 

@@ -41,11 +41,11 @@ public class MainActivity extends BaseActivity {
 
         setmToolbar();
         tabs();
-        //setarProdutos();
+        setarProdutos();
 
     }
 
-    /*
+
     private void setarProdutos() {
 
         try {
@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
         }
 
     }
-    */
+
 
     private void setmToolbar() {
 
@@ -149,8 +149,14 @@ public class MainActivity extends BaseActivity {
             Intent form = new Intent(getApplicationContext(), PedidoActivity.class);
             startActivity(form);
 
-            ParametroBO parametroBO = new ParametroBO(this);
-            Parametro parametro = parametroBO.getParametro();
+            //ParametroBO parametroBO = new ParametroBO(this);
+            //Parametro parametro = parametroBO.getParametro();
+
+            Parametro parametro = new Parametro();
+            parametro.setCodigo(1);
+            parametro.setCodEmpresa(1);
+            parametro.setCodMesa(2);
+            parametro.setStatus("Em Atendimento");
 
             EventBus.getDefault().postSticky(parametro);
 

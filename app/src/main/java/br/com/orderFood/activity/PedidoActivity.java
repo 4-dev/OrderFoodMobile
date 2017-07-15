@@ -7,13 +7,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.orderFood.R;
 import br.com.orderFood.fragment.FragmentoCategorias;
+import br.com.orderFood.model.entity.Pedido;
+import br.com.orderFood.model.model.Item;
 
 /**
  * @author Ruan Alves
  */
 public class PedidoActivity extends BaseActivity {
+
+    public static List<Item> listItensPedido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +28,8 @@ public class PedidoActivity extends BaseActivity {
         setContentView(R.layout.activity_pedido);
 
         agregarToolbar();
+
+        listItensPedido = new ArrayList<>();
 
         Fragment fragmentoGenerico = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -43,6 +52,13 @@ public class PedidoActivity extends BaseActivity {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setTitle("Pedido   (R$ 0,00)");
         }
+
+    }
+
+    public List<Item> getListItensPedido() {
+
+        if (listItensPedido == null) listItensPedido = new ArrayList<Item>();
+        return listItensPedido;
 
     }
 

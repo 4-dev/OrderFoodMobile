@@ -2,17 +2,17 @@ package br.com.orderFood.dto;
 
 public class ProdutoDTO {
 
-    private int codigo;
+    private long codigo;
     private String categoria;
     private String descricao;
     private Double valor;
     private long qtEstoque;
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 

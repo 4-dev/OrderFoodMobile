@@ -31,6 +31,7 @@ public class RetornoQrCodeBO {
             for (ProdutoDTO p : objectSync.getListProdutos()){
 
                 Produto produto = new Produto();
+                produto.setCodigo((int) p.getCodigo());
                 produto.setDescricao(p.getDescricao());
                 produto.setQtEstoque((int) p.getQtEstoque());
                 produto.setValor(p.getValor());
