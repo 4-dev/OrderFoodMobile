@@ -211,6 +211,8 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
             showProgressDialog(getString(R.string.mensagem_progress));
             String URL = "https://orderfood.cfapps.io/pedido/";
+//            String URL = "http://192.168.6.134:9090/pedido/";
+
             Gson gson = new GsonBuilder().registerTypeAdapter(PedidoSync.class, new PedidoSyncGson()).create();
 
             Retrofit retrofit = new Retrofit.Builder()

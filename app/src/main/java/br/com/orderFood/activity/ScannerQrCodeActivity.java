@@ -80,15 +80,15 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
                 } else {
 
-                   /* String SCAN_RESULT = data.getStringExtra("SCAN_RESULT"); // Deyvid Costa
+                    String SCAN_RESULT = data.getStringExtra("SCAN_RESULT"); // Deyvid Costa
                     String formatName = data.getStringExtra("SCAN_RESULT_FORMAT"); // Deyvid Costa
 
-                    verificarMesaQRCode(Integer.parseInt(SCAN_RESULT));*/
+                    verificarMesaQRCode(Integer.parseInt(SCAN_RESULT));
 
-                    //verificarMesaQRCode(2);
+                    /*//verificarMesaQRCode(2);
 
                     Intent form = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(form);
+                    startActivity(form);*/
 
                 }
             } else {
@@ -102,8 +102,8 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
         final Activity activity = this;
         showProgressDialog(getString(R.string.mensagem_progress));
-        //String URL = "https://orderfood.cfapps.io/mesa/";
-        String URL = "http://192.168.0.11:9090/mesa/";
+        String URL = "https://orderfood.cfapps.io/mesa/";
+//        String URL = "http://192.168.6.134:9090/mesa/";
        // String URL = "http://10.0.0.195:9090/mesa/";
         Gson gson = new GsonBuilder().registerTypeAdapter(ObjectSync.class, new ObjectSyncGson()).create();
 
@@ -113,7 +113,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
                 .build();
 
         APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
-        final Call<ObjectSync> requester = serviceConection.verificarmesa(2);
+        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT);
 
         new Thread() {
 
