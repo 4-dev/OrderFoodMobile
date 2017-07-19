@@ -6,7 +6,7 @@ public class ObjectSync {
 
 	private List<ProdutoDTO> listProdutos;
 	private String mensagem;
-	private int codmesa ;
+
 	public List<ProdutoDTO> getListProdutos() {
 		return listProdutos;
 	}
@@ -21,14 +21,5 @@ public class ObjectSync {
 
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
-	}
-
-
-	public int getCodmesa() {
-		return codmesa;
-	}
-
-	public void setCodmesa(int codmesa) {
-		this.codmesa = codmesa;
 	}
 }

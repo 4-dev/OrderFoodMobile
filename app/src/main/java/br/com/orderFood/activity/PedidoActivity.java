@@ -12,15 +12,19 @@ import java.util.List;
 
 import br.com.orderFood.R;
 import br.com.orderFood.fragment.FragmentoCategorias;
+import br.com.orderFood.model.entity.Parametro;
 import br.com.orderFood.model.entity.Pedido;
 import br.com.orderFood.model.model.Item;
 
 /**
  * @author Ruan Alves
  */
+
 public class PedidoActivity extends BaseActivity {
 
     public static List<Item> listItensPedido;
+    public static Pedido pedido = null;
+    public static Parametro parametro = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

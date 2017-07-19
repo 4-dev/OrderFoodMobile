@@ -13,8 +13,6 @@ import com.google.gson.GsonBuilder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.IOException;
 
 import br.com.orderFood.R;
@@ -82,16 +80,12 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
                 } else {
 
-                    String SCAN_RESULT_CODMESA = data.getStringExtra("SCAN_RESULT"); // Deyvid Costa
+                    String SCAN_RESULT = data.getStringExtra("SCAN_RESULT"); // Deyvid Costa
                     String formatName = data.getStringExtra("SCAN_RESULT_FORMAT"); // Deyvid Costa
 
-                    EventBus.getDefault().postSticky(SCAN_RESULT_CODMESA);
+                    verificarMesaQRCode(Integer.parseInt(SCAN_RESULT));
 
-                    verificarMesaQRCode(Integer.parseInt(SCAN_RESULT_CODMESA));
-
-                    /*//verificarMesaQRCode(2);
-
-                    Intent form = new Intent(getApplicationContext(), MainActivity.class);
+                    /*Intent form = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(form);*/
 
                 }
@@ -102,13 +96,13 @@ public class ScannerQrCodeActivity extends BaseActivity {
         }
     }
 
-    private void verificarMesaQRCode(final int SCAN_RESULT_CODMESA) {
+    private void verificarMesaQRCode(final int SCAN_RESULT) {
 
         final Activity activity = this;
         showProgressDialog(getString(R.string.mensagem_progress));
         String URL = "https://orderfood.cfapps.io/mesa/";
-//        String URL = "http://192.168.6.134:9090/mesa/";
-       // String URL = "http://10.0.0.195:9090/mesa/";
+        //String URL = "http://192.168.0.105:9090/mesa/";
+        // String URL = "http://10.0.0.195:9090/mesa/";
         Gson gson = new GsonBuilder().registerTypeAdapter(ObjectSync.class, new ObjectSyncGson()).create();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -117,7 +111,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
                 .build();
 
         APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
-        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT_CODMESA);
+        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT);
 
         new Thread() {
 
@@ -136,8 +130,7 @@ public class ScannerQrCodeActivity extends BaseActivity {
                         if (!objectSync.getMensagem().equalsIgnoreCase("Mesa ocupada")) {
 
                             RetornoQrCodeBO mCodeBO = new RetornoQrCodeBO(activity);
-                            objectSync.setCodmesa(SCAN_RESULT_CODMESA);
-                            if (mCodeBO.salvar(objectSync)) {
+                            if (mCodeBO.salvar(objectSync,SCAN_RESULT)) {
 
                                 Intent form = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(form);

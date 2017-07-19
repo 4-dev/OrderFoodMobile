@@ -15,8 +15,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +41,11 @@ public class MainActivity extends BaseActivity {
 
         setmToolbar();
         tabs();
-        setarProdutos();
+        // setarProdutos();
 
     }
 
-
-    private void setarProdutos() {
+    /*private void setarProdutos() {
 
         try {
 
@@ -83,8 +80,7 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-    }
-
+    }*/
 
     private void setmToolbar() {
 
@@ -140,20 +136,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-
-    @Override
-    @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -168,11 +150,11 @@ public class MainActivity extends BaseActivity {
             ParametroBO parametroBO = new ParametroBO(this);
             Parametro parametro = parametroBO.getParametro();
 
-//            Parametro parametro = new Parametro();
-//            parametro.setCodigo(1);
-//            parametro.setCodEmpresa(1);
-//            parametro.setCodMesa(1);
-//            parametro.setStatus("Em Atendimento");
+            /*Parametro parametro = new Parametro();
+            parametro.setCodigo(1);
+            parametro.setCodEmpresa(1);
+            parametro.setCodMesa(2);
+            parametro.setStatus("Em Atendimento");*/
 
             EventBus.getDefault().postSticky(parametro);
 

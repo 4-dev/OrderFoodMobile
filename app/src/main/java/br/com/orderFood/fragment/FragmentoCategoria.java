@@ -44,7 +44,6 @@ import br.com.orderFood.model.entity.Produto;
 import br.com.orderFood.model.model.Item;
 import br.com.orderFood.utils.Utils;
 
-
 public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnClickListenerHack {
 
     private static final String INDICE_SECCION = "com.restaurantericoparico.FragmentoCategoriasTab.extra.INDICE_SECCION";
@@ -53,10 +52,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
     private AdaptadorProdutos adaptador;
     private Produto produtoSelecionado;
     private DialogContagemHelper dialogContagemHelper;
-    //private List<Item> listItens;
     private List<Produto> listProdutos;
-    private Parametro parametro;
-    private Pedido pedido;
 
     public static FragmentoCategoria novaInstancia(int indiceSeccion) {
         FragmentoCategoria fragment = new FragmentoCategoria();
@@ -377,7 +373,8 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
     @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
     public void onEvent(Parametro parametro) {
 
-        this.parametro = parametro;
+        PedidoActivity.pedido = null;
+        PedidoActivity.parametro = parametro;
         EventBus.getDefault().removeStickyEvent(parametro);
         setarListagemDados();
 
@@ -388,7 +385,8 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
         try {
 
-            this.pedido = pedido;
+            PedidoActivity.parametro = null;
+            PedidoActivity.pedido = pedido;
 
             PedidoActivity.listItensPedido = new ArrayList<>();
             PedidoBO pedidoBO = new PedidoBO(getActivity());
@@ -453,7 +451,7 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
 
                 PedidoBO pedidoBO = new PedidoBO(getActivity());
 
-                if(pedido == null || pedido.getCodigo() == 0){
+                if(PedidoActivity.pedido == null || PedidoActivity.pedido.getCodigo() == 0){
 
                     Pedido pedido = new Pedido();
                     pedido.setStatus("PENDENTE");
@@ -461,16 +459,16 @@ public class FragmentoCategoria extends BaseFragment implements RecyclerViewOnCl
                     pedido.setItens(getItensPedido(((PedidoActivity) getActivity()).getListItensPedido()));
                     pedido.setQtItens(((PedidoActivity) getActivity()).getListItensPedido().size());
                     pedido.setObservacao("");
-                    pedido.setCodMesa(parametro.getCodMesa());
+                    pedido.setCodMesa(PedidoActivity.parametro.getCodMesa());
 
                     pedidoBO.salvarPedido(pedido);
 
                 } else {
 
-                    pedido.setItens(getItensPedido(((PedidoActivity) getActivity()).getListItensPedido()));
-                    pedido.setQtItens(((PedidoActivity) getActivity()).getListItensPedido().size());
+                    PedidoActivity.pedido.setItens(getItensPedido(((PedidoActivity) getActivity()).getListItensPedido()));
+                    PedidoActivity.pedido.setQtItens(((PedidoActivity) getActivity()).getListItensPedido().size());
 
-                    pedidoBO.alterarPedido(pedido);
+                    pedidoBO.alterarPedido(PedidoActivity.pedido);
 
                 }
 

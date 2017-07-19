@@ -21,7 +21,7 @@ public class RetornoQrCodeBO {
         mContext = context;
     }
 
-    public boolean salvar(ObjectSync objectSync){
+    public boolean salvar(ObjectSync objectSync, int codMesa){
 
         try {
 
@@ -50,8 +50,8 @@ public class RetornoQrCodeBO {
             }
 
             Parametro parametro = new Parametro();
-            parametro.setEmpresa("OrderFood");
-            parametro.setCodMesa(objectSync.getCodmesa());
+            parametro.setEmpresa("ORDER FOOD");
+            parametro.setCodMesa(codMesa);
             parametro.setCodEmpresa(1);
             parametro.setStatus("Em Atendimento");
 

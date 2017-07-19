@@ -10,8 +10,8 @@ import android.widget.FrameLayout;
 import java.sql.SQLException;
 
 import br.com.orderFood.R;
-import br.com.orderFood.dto.ObjectSync;
 import br.com.orderFood.helper.ResumoHelper;
+import br.com.orderFood.model.bo.ParametroBO;
 import br.com.orderFood.model.bo.PedidoBO;
 import br.com.orderFood.model.entity.Parametro;
 
@@ -58,10 +58,11 @@ public class ResumoFragment extends BaseFragment {
             if (mResumoHelper == null) mResumoHelper = new ResumoHelper(getActivity(), mView);
 
             PedidoBO pedidoBO = new PedidoBO(getActivity());
-            Parametro parametro = new Parametro();
+
+            ParametroBO parametroBO = new ParametroBO(getActivity());
+            Parametro parametro = parametroBO.getParametro();
             parametro.setStatus("Em Atendimento");
-            parametro.setCodMesa(1);
-            parametro.setEmpresa("Deyvid Solares e Lanches");
+            parametro.setEmpresa("Order Food Lanches");
 
             mResumoHelper.setInformacoes(parametro, pedidoBO.getPedidos());
 
@@ -71,6 +72,7 @@ public class ResumoFragment extends BaseFragment {
         }
 
     }
+
 
     public ResumoFragment() {
 

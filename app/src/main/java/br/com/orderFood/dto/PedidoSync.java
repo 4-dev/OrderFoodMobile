@@ -11,6 +11,15 @@ import br.com.orderFood.model.entity.Pedido;
 public class PedidoSync {
 
     private List<Pedido> listPedidos;
+    private String imei;
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
+    }
 
     public PedidoSync() {
         listPedidos = new ArrayList<>();

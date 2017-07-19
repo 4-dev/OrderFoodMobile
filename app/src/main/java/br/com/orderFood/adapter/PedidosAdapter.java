@@ -16,6 +16,7 @@ import br.com.orderFood.utils.Utils;
 /**
  * Created by Ruan Alves
  */
+
 public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.MyViewHolder> {
 
     private Context mContext;

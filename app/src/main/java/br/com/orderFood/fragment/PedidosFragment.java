@@ -1,14 +1,22 @@
 package br.com.orderFood.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -68,6 +76,9 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
         View view = inflater.inflate(R.layout.fragment_pedidos, container, false);
         mEmptyStateContainer = (View) view.findViewById(R.id.empty_state_container);
+
+        setmRecyclerView(view);
+
         buttonFabEnviarPedidos(view);
 
         return view;
@@ -78,7 +89,6 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
     public void onResume() {
         super.onResume();
 
-        setmRecyclerView(getView());
         setListDados();
 
     }
@@ -108,27 +118,55 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                try {
-
-                    PedidoBO pedidoBO = new PedidoBO(getActivity());
-                    List<Pedido> listPedidos = pedidoBO.getPedidosPendentes();
-                    pedidoBO = null;
-
-                    if(listPedidos != null && listPedidos.size() > 0){
-                        PedidoSync pedidoSync = new PedidoSync();
-                        pedidoSync.setListPedidos(listPedidos);
-                        enviarPedios(pedidoSync);
-                    } else {
-                        showAlert(getString(R.string.msg_inf_pedidospend));
-                    }
-
-                }catch (SQLException e){
-                    showAlert(getString(R.string.msg_erro_inesperado));
+                if (permissoesHabilitadas()) {
+                    enviarPedidos();
                 }
-
             }
         });
+
+    }
+
+    private void enviarPedidos(){
+
+        try {
+
+            PedidoBO pedidoBO = new PedidoBO(getActivity());
+            List<Pedido> listPedidos = pedidoBO.getPedidosPendentes();
+            pedidoBO = null;
+
+            if(listPedidos != null && listPedidos.size() > 0){
+
+                String imei = getIMEI();
+
+                PedidoSync pedidoSync = new PedidoSync();
+                pedidoSync.setListPedidos(listPedidos);
+                pedidoSync.setImei(imei);
+                enviarPedios(pedidoSync);
+
+            } else {
+                showAlert(getString(R.string.msg_inf_pedidospend));
+            }
+
+        }catch (SQLException e){
+            showAlert(getString(R.string.msg_erro_inesperado));
+        }
+
+    }
+
+    public String getIMEI() {
+
+        String imei = "";
+        TelephonyManager telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+
+        if(telephonyManager != null) imei = telephonyManager.getDeviceId();
+        WifiManager wifiMan = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        if(imei == null || imei.equals("")) {
+            WifiInfo wifiInf = wifiMan.getConnectionInfo();
+            imei = wifiInf.getMacAddress();
+        }
+
+        return imei;
 
     }
 
@@ -211,8 +249,6 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
             showProgressDialog(getString(R.string.mensagem_progress));
             String URL = "https://orderfood.cfapps.io/pedido/";
-//            String URL = "http://192.168.6.134:9090/pedido/";
-
             Gson gson = new GsonBuilder().registerTypeAdapter(PedidoSync.class, new PedidoSyncGson()).create();
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -275,6 +311,50 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
     }
 
+    private boolean permissoesHabilitadas() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            Log.d("NGVL", "permissoesHabilitadas::BEGIN");
+            List<String> permissoes = new ArrayList<>();
+
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissoes.add(Manifest.permission.READ_PHONE_STATE);
+            }
+
+            if (!permissoes.isEmpty()) {
+                String[] array = new String[permissoes.size()];
+                permissoes.toArray(array);
+                ActivityCompat.requestPermissions(getActivity(), array, 1);
+            }
+
+            Log.d("NGVL", "permissoesHabilitadas::END");
+            return permissoes.isEmpty();
+
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Log.d("NGVL", "onRequestPermissionsResult::BEGIN");
+
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                break;
+            } else {
+                enviarPedidos();
+            }
+        }
+
+        Log.d("NGVL", "onRequestPermissionsResult::END");
+
+    }
 
 
     @Override
