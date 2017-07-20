@@ -13,8 +13,8 @@ import retrofit2.Call;
  */
 public interface APIServiceConection {
 
-    @GET("verificarmesa/{id}")
-    Call<ObjectSync> verificarmesa(@Path("id") int codMesa);
+    @GET("verificarmesa/{id}/{imei}")
+    Call<ObjectSync> verificarmesa(@Path("id") int codMesa, @Path("imei") String imei);
 
     @POST("gerarpedido")
     Call<String> enviarPedidos(@Body PedidoSync pedidoSync);

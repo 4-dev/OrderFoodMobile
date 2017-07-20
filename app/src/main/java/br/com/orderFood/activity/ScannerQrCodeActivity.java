@@ -1,8 +1,12 @@
 package br.com.orderFood.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +21,7 @@ import java.io.IOException;
 
 import br.com.orderFood.R;
 import br.com.orderFood.dto.ObjectSync;
+import br.com.orderFood.fragment.PedidosFragment;
 import br.com.orderFood.interfaces.APIServiceConection;
 import br.com.orderFood.model.bo.ParametroBO;
 import br.com.orderFood.model.bo.RetornoQrCodeBO;
@@ -96,12 +101,29 @@ public class ScannerQrCodeActivity extends BaseActivity {
         }
     }
 
+    public String getIMEI() {
+
+        String imei = "";
+        TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+
+        if(telephonyManager != null) imei = telephonyManager.getDeviceId();
+        WifiManager wifiMan = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        if(imei == null || imei.equals("")) {
+            WifiInfo wifiInf = wifiMan.getConnectionInfo();
+            imei = wifiInf.getMacAddress();
+        }
+
+        return imei;
+
+    }
+
     private void verificarMesaQRCode(final int SCAN_RESULT) {
 
         final Activity activity = this;
         showProgressDialog(getString(R.string.mensagem_progress));
         String URL = "https://orderfood.cfapps.io/mesa/";
-        //String URL = "http://192.168.0.105:9090/mesa/";
+//        String URL = "http://192.168.15.7:9090/mesa/";
         // String URL = "http://10.0.0.195:9090/mesa/";
         Gson gson = new GsonBuilder().registerTypeAdapter(ObjectSync.class, new ObjectSyncGson()).create();
 
@@ -110,8 +132,9 @@ public class ScannerQrCodeActivity extends BaseActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
+
         APIServiceConection serviceConection = retrofit.create(APIServiceConection.class);
-        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT);
+        final Call<ObjectSync> requester = serviceConection.verificarmesa(SCAN_RESULT, getIMEI());
 
         new Thread() {
 
