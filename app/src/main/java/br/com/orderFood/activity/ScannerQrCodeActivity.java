@@ -1,11 +1,15 @@
 package br.com.orderFood.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +22,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.orderFood.R;
 import br.com.orderFood.dto.ObjectSync;
@@ -38,8 +44,10 @@ public class ScannerQrCodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
-        getIntentIntegrator();
-        buscarQrCodeManual();
+        if (permissoesHabilitadas()) {
+            getIntentIntegrator();
+            buscarQrCodeManual();
+        }
 
     }
 
@@ -202,6 +210,51 @@ public class ScannerQrCodeActivity extends BaseActivity {
 
     }
 
+    private boolean permissoesHabilitadas() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            Log.d("NGVL", "permissoesHabilitadas::BEGIN");
+            List<String> permissoes = new ArrayList<>();
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissoes.add(Manifest.permission.READ_PHONE_STATE);
+            }
+
+            if (!permissoes.isEmpty()) {
+                String[] array = new String[permissoes.size()];
+                permissoes.toArray(array);
+                ActivityCompat.requestPermissions(this, array, 1);
+            }
+
+            Log.d("NGVL", "permissoesHabilitadas::END");
+            return permissoes.isEmpty();
+
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Log.d("NGVL", "onRequestPermissionsResult::BEGIN");
+
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                break;
+            } else {
+                getIntentIntegrator();
+                buscarQrCodeManual();
+            }
+        }
+
+        Log.d("NGVL", "onRequestPermissionsResult::END");
+
+    }
 
 }
 
