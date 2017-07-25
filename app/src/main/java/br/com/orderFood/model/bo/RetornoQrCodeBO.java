@@ -35,6 +35,7 @@ public class RetornoQrCodeBO {
                 produto.setDescricao(p.getDescricao());
                 produto.setQtEstoque((int) p.getQtEstoque());
                 produto.setValor(p.getValor());
+                produto.setLinkFoto(p.getFoto());
 
                 if(p.getCategoria().equalsIgnoreCase("PRATOS")) {
                     produto.setCategoria(TipoCategoria.PRATOS);

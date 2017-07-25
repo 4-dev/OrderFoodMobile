@@ -52,7 +52,7 @@ public class ProdutoDAO extends GenericDAO<Produto> {
         contentValues.put(COLUNA_CODIGO, produto.getCodigo());
         contentValues.put(COLUNA_CATEGORIA, produto.getCategoria().name());
         contentValues.put(COLUNA_DESCRIACAO, produto.getDescricao());
-        //contentValues.put(COLUNA_FOTO, produto.getCategoria());
+        contentValues.put(COLUNA_FOTO, produto.getLinkFoto());
         contentValues.put(COLUNA_VALOR, produto.getValor());
         contentValues.put(COLUNA_QTDEESTOQUE, produto.getQtEstoque());
 
@@ -92,7 +92,7 @@ public class ProdutoDAO extends GenericDAO<Produto> {
         Cursor cursor = null;
         List<Produto> resultados = new ArrayList<>();
 
-        sql.append("SELECT CODIGO, DESCRICAO, VALOR, QTESTOQUE, CATEGORIA FROM PRODUTO");
+        sql.append("SELECT CODIGO, DESCRICAO, VALOR, QTESTOQUE, CATEGORIA, FOTO FROM PRODUTO");
 
         cursor = dataBase.rawQuery(sql.toString(), null);
 
@@ -111,6 +111,8 @@ public class ProdutoDAO extends GenericDAO<Produto> {
             } else {
                 model.setCategoria(TipoCategoria.SOBREMESAS);
             }
+
+            model.setLinkFoto(cursor.getString(5));
 
             resultados.add(model);
             model = null;

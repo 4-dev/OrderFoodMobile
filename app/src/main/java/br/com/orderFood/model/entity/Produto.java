@@ -21,6 +21,7 @@ public class Produto implements Serializable, EntidadePersistivel {
     private int foto;
     private double valor;
     private int qtEstoque;
+    private String linkFoto;
 
     public Produto() {
 
@@ -71,6 +72,14 @@ public class Produto implements Serializable, EntidadePersistivel {
         POSTRES.add(new Produto(19, 2.5, "Cupcake Festival", R.drawable.cupcakes_festival));
         POSTRES.add(new Produto(20, 4, "Pastel De Fresa", R.drawable.pastel_fresa));
         POSTRES.add(new Produto(21, 5, "Muffin Amoroso", R.drawable.muffin_amoroso));
+    }
+
+    public String getLinkFoto() {
+        return linkFoto;
+    }
+
+    public void setLinkFoto(String linkFoto) {
+        this.linkFoto = linkFoto;
     }
 
     public int getCodigo() {

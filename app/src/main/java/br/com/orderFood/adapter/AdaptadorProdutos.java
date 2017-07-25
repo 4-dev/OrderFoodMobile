@@ -1,5 +1,6 @@
 package br.com.orderFood.adapter;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,10 +71,20 @@ public class AdaptadorProdutos
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
         Produto item = items.get(i);
-        Glide.with(viewHolder.itemView.getContext())
+
+        /*Glide.with(viewHolder.itemView.getContext())
                 .load(item.getFoto())
                 .centerCrop()
-                .into(viewHolder.imagen);
+                .into(viewHolder.imagen);*/
+
+        Glide
+            .with(viewHolder.itemView.getContext())
+            .load(item.getLinkFoto())
+            .crossFade()
+            .centerCrop()
+            .into(viewHolder.imagen)
+            .onLoadFailed(new RuntimeException(), ContextCompat.getDrawable(viewHolder.itemView.getContext(),R.drawable.cupcakes_festival));
+
         viewHolder.nombre.setText(item.getDescricao());
         viewHolder.precio.setText("R$ " + item.getValor());
         viewHolder.linearlayout_color.setBackgroundResource(R.color.accentColor);

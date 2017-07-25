@@ -12,7 +12,7 @@ import br.com.orderFood.interfaces.IBancoDeDados;
  */
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static final int VERSAO_BANCO_DADOS = 7;
+    private static final int VERSAO_BANCO_DADOS = 10;
 
     private static DataBaseHelper instance;
 
@@ -41,6 +41,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i("DATABASE", "ATUALIZANDO TABELA");
+
+        db.execSQL(PedidoDAO.SCRIPT_DELECAO_TABELA);
+        db.execSQL(ItensPedidoDAO.SCRIPT_DELECAO_TABELA);
+        db.execSQL(ProdutoDAO.SCRIPT_DELECAO_TABELA);
+        db.execSQL(ParametroDAO.SCRIPT_DELECAO_TABELA);
+
         onCreate(db);
     }
 }

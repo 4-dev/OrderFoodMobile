@@ -7,6 +7,15 @@ public class ProdutoDTO {
     private String descricao;
     private Double valor;
     private long qtEstoque;
+    private String foto;
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
 
     public long getCodigo() {
         return codigo;
