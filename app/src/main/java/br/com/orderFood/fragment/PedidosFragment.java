@@ -2,6 +2,7 @@ package br.com.orderFood.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,8 +11,10 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,11 +47,13 @@ import br.com.orderFood.activity.PedidoActivity;
 import br.com.orderFood.adapter.ContextMenuAdapter;
 import br.com.orderFood.adapter.PedidosAdapter;
 import br.com.orderFood.dto.PedidoSync;
+import br.com.orderFood.helper.DialogContagemHelper;
 import br.com.orderFood.interfaces.APIServiceConection;
 import br.com.orderFood.interfaces.RecyclerViewOnClickListenerHack;
 import br.com.orderFood.model.bo.PedidoBO;
 import br.com.orderFood.model.entity.Pedido;
 import br.com.orderFood.model.model.ContextMenuItem;
+import br.com.orderFood.model.model.Item;
 import br.com.orderFood.retrofit.PedidoSyncGson;
 import br.com.orderFood.utils.UtilTCM;
 import retrofit2.Call;
@@ -109,6 +116,13 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         @Override
         public void run() {
             setListDados();
+        }
+    };
+
+    private Runnable showDialogReiniciarAPPView = new Runnable() {
+        @Override
+        public void run() {
+            showDialogReiniciarAPPView();
         }
     };
 
@@ -280,14 +294,11 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
                             getActivity().runOnUiThread(changeListarDados);
 
                         } else if (retorno != null && retorno.equalsIgnoreCase("Mesa_Finalizada"))  {
-                            mTextToast = getString(R.string.mensagem_mesa_finalizada);
-                            getActivity().runOnUiThread(changeMessageToastALERT);
+                            getActivity().runOnUiThread(showDialogReiniciarAPPView);
                         } else {
                             mTextToast = getString(R.string.mensagem_naohainformacoes);
                             getActivity().runOnUiThread(changeMessageToastALERT);
                         }
-
-
 
                         mProgressDialog.dismiss();
                         Thread.interrupted();
@@ -340,6 +351,32 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
         }
 
         return true;
+
+    }
+
+    public void showDialogReiniciarAPPView() {
+
+        final Activity activity = getActivity();
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .iconRes(R.mipmap.ic_launcher)
+                .limitIconToDefaultSize()
+                .title(R.string.app_informa)
+                .content(R.string.mensagem_mesa_finalizada)
+                .positiveText(getString(R.string.reiniciar))
+                .positiveColor(ContextCompat.getColor(getActivity(), R.color.accent))
+                .canceledOnTouchOutside(false)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        Intent i = getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName());
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                    }
+                })
+                .build();
+
+        dialog.show();
 
     }
 

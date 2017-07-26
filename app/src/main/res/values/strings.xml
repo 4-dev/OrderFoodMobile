@@ -15,6 +15,8 @@
     <string name="remover">Remover</string>
     <string name="valortotal">Valor Total</string>
     <string name="quantidade">Quantidade</string>
+    <string name="app_informa">APP Informa</string>
+    <string name="reiniciar">Reiniciar</string>
 
     <string name="titulo_tab_platos">PRATOS</string>
     <string name="titulo_tab_bebidas">BEBIDAS</string>
@@ -33,5 +35,5 @@
     <string name="mensagem_configuracao">Por favor configure o aplicativo para prosseguir</string>
     <string name="mensagem_erro_padrao">Erro ao realizar operação!</string>
     <string name="mensagem_sucesso">Operação realizada com sucesso!</string>
-    <string name="mensagem_mesa_finalizada">Esta mesa já foi finalizada. Reinicie sua aplicação</string>
+    <string name="mensagem_mesa_finalizada">Esta mesa já foi finalizada... Reinicie sua aplicação</string>
 </resources>
