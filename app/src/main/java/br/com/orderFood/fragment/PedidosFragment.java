@@ -279,10 +279,15 @@ public class PedidosFragment extends BaseFragment implements RecyclerViewOnClick
 
                             getActivity().runOnUiThread(changeListarDados);
 
+                        } else if (retorno != null && retorno.equalsIgnoreCase("Mesa_Finalizada"))  {
+                            mTextToast = getString(R.string.mensagem_mesa_finalizada);
+                            getActivity().runOnUiThread(changeMessageToastALERT);
                         } else {
                             mTextToast = getString(R.string.mensagem_naohainformacoes);
                             getActivity().runOnUiThread(changeMessageToastALERT);
                         }
+
+
 
                         mProgressDialog.dismiss();
                         Thread.interrupted();
